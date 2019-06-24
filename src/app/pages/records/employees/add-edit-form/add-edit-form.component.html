@@ -1,0 +1,68 @@
+
+
+<mat-card-content   >
+
+  <form [formGroup]="addEditEmployeeForm"  (ngSubmit)="onSubmit(addEditEmployeeForm.value)"
+  [class.error]="!addEditEmployeeForm.valid && addEditEmployeeForm.touched" autocomplete="off"  fxLayout="column wrap"
+        fxLayoutAlign="center center" fxLayoutGap="40px">             
+           
+            <p>             
+              <span>
+                <mat-form-field appearance="outline" >
+                  <mat-label>Full Name</mat-label>
+                  <input matInput #employeeId maxlength="60" class="inputField" type="text" id="name"
+                      formControlName="name" [errorStateMatcher]="matcher" required placeholder="Employee Name">
+                  <mat-hint align="end">{{name?.value.length || 0}}/60</mat-hint>
+                  <!-- <mat-error>{{ errors.required }}</mat-error> -->
+                </mat-form-field>
+             </span>
+
+             <span>
+                <mat-form-field appearance="outline" >
+                    <mat-label>ID Number</mat-label>
+                    <input matInput #employeeId maxlength="12" class="inputField" type="number" id="employeeId"
+                          formControlName="employeeId" [errorStateMatcher]="matcher" required placeholder="ID Number">
+                    <mat-hint align="end">{{employeeId?.value?.length || 0}}/12</mat-hint>
+                    <!-- <mat-error>{{ errors.required }}</mat-error> -->
+                </mat-form-field>
+             </span>
+
+             <span>
+                <mat-form-field appearance="outline" >
+                    <mat-label>Email Address</mat-label>
+                    <input matInput #email maxlength="60" class="inputField" type="email" id="email"
+                            formControlName="email" [errorStateMatcher]="matcher" required placeholder="Email Address">
+                      <mat-hint align="end">{{email?.value.length || 0}}/60</mat-hint> 
+                    <!-- <mat-error>{{ errors.required }}</mat-error> -->
+                  </mat-form-field>
+             </span>
+
+             <span>
+                <mat-form-field appearance="outline" >
+                    <mat-label>Phone Number</mat-label>
+                    <input matInput #email maxlength="12" class="inputField" type="number" id="phoneNumber"
+                            formControlName="phoneNumber" [errorStateMatcher]="matcher" required placeholder="Phone Number">
+                    <mat-hint align="end">{{phoneNumber?.value.length || 0}}/12</mat-hint> 
+                    <!-- <mat-error>{{ errors.required }}</mat-error> -->
+                  </mat-form-field>
+             </span>
+             <span>
+                <mat-form-field appearance="outline" >
+                    <mat-label>Date of Employment</mat-label>
+                    <input matInput [matDatepicker]="picker" placeholder="Choose a date of employment" [max]="maxDate" formControlName="dateOfEmployment" id="dateOfEmployment"
+                      readonly (click)="picker.open()">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                 </mat-form-field>
+             </span>
+           
+
+
+            </p>          
+
+      </form>
+
+</mat-card-content>
+
+
+  

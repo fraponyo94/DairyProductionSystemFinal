@@ -1,0 +1,15 @@
+ <div class="row">
+    <div class="col-md-12">
+        <card cardTitle="Health Records" >
+            <mat-tab-group  (selectedTabChange)="executeSelectedChange($event)">
+                <mat-tab label="Cow"> 
+                   <app-cattle-health></app-cattle-health>
+                </mat-tab>
+                <mat-tab label="Calf">
+                    <app-calf-health></app-calf-health>
+                </mat-tab>
+               
+            </mat-tab-group>
+        </card>
+    </div>
+ </div>

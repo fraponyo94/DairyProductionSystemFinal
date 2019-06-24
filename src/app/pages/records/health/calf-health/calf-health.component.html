@@ -1,0 +1,99 @@
+<div class="row">
+<div class="col-md-12">
+        <card cardTitle="Add Cattle Health Record" >
+                <form [formGroup]="calfHealthForm"  (ngSubmit)="onSubmit()"  autocomplete="off"  class="my-3 border  p-3  ml-auto mr-auto" fxFlex="80%" fxFlex.xs="100%"  >                         
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column"  fxLayoutGap.lt-md="0px"> 
+                        <mat-form-field fxFlex  appearance="outline" formGroupName="calf"  class="m-auto pr-1" >
+                            <mat-label>select Calf</mat-label>
+                            <mat-select  placeholder="---Select one---" type="text" id="calfId"
+                            formControlName="calfId" required >                              
+                                  <mat-option *ngFor="let option of calfs | async" [value]="option.calfId">
+                                    {{option.calfId}}
+                                  </mat-option>                            
+                            </mat-select>
+                        </mat-form-field> 
+        
+                        <mat-form-field fxFlex appearance="outline" id="date" class="m-auto pl-1" > 
+                            <mat-label>Date of Treatment</mat-label>
+                            <input matInput [matDatepicker]="picker" [max]="maxDate"  placeholder="Select Date of treatment"  formControlName="date" id="date"
+                              readonly (click)="picker.open()">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            
+                        </mat-form-field>
+                    </div> 
+
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column"  fxLayoutGap.lt-md="0px">
+                       
+                          <mat-form-field fxFlex  class="w-100 m-auto" appearance="outline" class="m-auto pr-1" >                             
+                              <mat-label>Brief Health History </mat-label>
+                              <textarea matInput   class="inputField" type="text" id="history"
+                                  formControlName="history"  placeholder="Enter Brief Health History"   >
+                                </textarea>
+                            </mat-form-field> 
+                        
+                            <mat-form-field fxFlex class="w-100 m-auto"  appearance="outline" class="m-auto pl-1" >
+                                <mat-label>Animal symptoms </mat-label>
+                                <textarea matInput   class="inputField" type="text" id="symptoms"
+                                    formControlName="symptoms"  placeholder="Enter Symptoms identified"   >
+                                  </textarea>
+                            </mat-form-field>
+                      
+
+                    </div>
+
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column"  fxLayoutGap.lt-md="0px">
+                  
+                            <mat-form-field fxFlex class="w-100 m-auto"  appearance="outline" class="m-auto pr-1" >
+                                <mat-label>Treatment Administered </mat-label>
+                                <textarea matInput   class="inputField" type="text" id="treatment"
+                                    formControlName="treatment"  placeholder="Describe treatment administered"   >
+                                  </textarea>
+                            </mat-form-field>
+                        
+                            <mat-form-field fxFlex class="w-100 m-auto"  appearance="outline" class="m-auto pl-1">
+                                <mat-label>Contact of veterinary Doctor</mat-label>
+                                <input matInput   class="inputField" type="text" id="contactofVeterinaryDoctor"
+                                    formControlName="contactofVeterinaryDoctor"  placeholder="Enter contact of Veterinary Doctor"  />  
+                            </mat-form-field>
+                       
+                      </div>
+
+                      
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column"  fxLayoutGap.lt-md="0px">
+                        
+                            <mat-form-field fxFlex class="w-100 m-auto"  appearance="outline" class="m-auto pr-1">
+                                <mat-label>Cost of Medication in Ksh</mat-label>
+                                <input matInput   class="inputField" type="number" id="costOfTreatMent"
+                                    formControlName="costOfTreatMent"  placeholder="0.00"  />                                      
+                                  
+                            </mat-form-field>
+                 
+                            <mat-form-field fxFlex class="w-100 m-auto"  appearance="outline" class="m-auto pl-1" >
+                                <mat-label>Remarks</mat-label>
+                                <input matInput   class="inputField" type="text" id="remarks"
+                                    formControlName="remarks"  placeholder="Optional remarks"  />
+                                
+                            </mat-form-field>
+                        
+                      </div>
+
+                    
+                    <!-- Submit Button -->
+                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="50px">
+                        <button class="btn btn-primary" [disabled]="!calfHealthForm.valid">ADD</button>
+                        <button class="btn btn-primary" (click)="reset()">Cancel</button>
+                        
+                        </div>
+                    </form>         
+        </card>
+    </div>
+</div>
+
+
+
+
+

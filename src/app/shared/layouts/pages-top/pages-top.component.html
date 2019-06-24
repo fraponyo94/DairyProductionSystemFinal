@@ -1,0 +1,30 @@
+<div class="pages-top" *ngIf="router.url != '/dairy/login'">
+  <div class="avatar-wrap">
+    <div class="avatar">
+      <img src="{{avatarImgSrc}}" alt="avatar">
+    </div>
+    <div class="user-info-wrap">
+      <span class="user-name" title="{{userName}}">{{userName}}</span>
+      <span class="user-post" title="{{userPost}}">{{userPost}}</span>
+    </div>
+  </div>
+
+  <div class="collapse-menu" (click)="_sidebarToggle()">
+  
+    <i class="fa fa-dedent fa-fw" *ngIf="sidebarToggle"></i>
+    <i class="fa fa-indent fa-fw" *ngIf="!sidebarToggle"></i>
+  </div>
+
+  <div class="search-group">
+    
+  <span>
+      <i class="fa fa-user fa-user"></i>
+  </span>
+  <span>
+    username
+  </span>
+   
+    
+  </div>
+
+</div>

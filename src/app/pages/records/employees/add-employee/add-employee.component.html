@@ -1,0 +1,33 @@
+
+
+
+<h2 mat-dialog-title fxLayoutAlign="space-around center">Add Employee</h2>
+
+<section mat-dialog-content>
+
+  <app-add-edit-form></app-add-edit-form>
+
+
+  <div fxLayout="row" fxLayoutAlign="space-around center">
+
+      <button disabled *ngIf="!addEmployeeForm.addEditEmployeeForm.valid"  mat-raised-button color="primary">Add Employee</button>
+    <button *ngIf="addEmployeeForm.addEditEmployeeForm.valid" mat-raised-button (click)="save(addEmployeeForm)"  mat-raised-button color="primary">Add Employee</button>  
+    <button mat-raised-button (click)="reset()">Reset </button>
+
+  </div>
+
+  <br><br>
+
+</section>
+
+<br><br>
+
+<div mat-dialog-actions fxLayoutAlign="space-around center">
+
+  <button mat-dialog-close md-raised-button (click)="dialogRef.close()" mat-stroked-button color="primary" >Exit</button>
+
+</div>
+
+
+
+

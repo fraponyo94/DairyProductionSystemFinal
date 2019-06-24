@@ -1,0 +1,15 @@
+  <div class="row">
+      <div class="col-md-12" flex="80%" flex:xs="100%">
+          <card cardTitle="Breeding Records">
+              <mat-tab-group  (selectedTabChange)="executeSelectedChange($event)">
+                  <mat-tab label="ADD Breeding Records"> 
+                     <app-breeding></app-breeding>>
+                  </mat-tab>
+                  <mat-tab label="Available Breeding Records">
+                     <app-breeding-records></app-breeding-records>>
+                  </mat-tab>
+                 
+              </mat-tab-group>
+          </card>
+      </div>
+   </div>

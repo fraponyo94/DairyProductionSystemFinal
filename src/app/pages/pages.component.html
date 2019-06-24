@@ -1,0 +1,15 @@
+<div class="pages-wrap" *ngIf="router.url != '/dairy/login'">
+  <pages-top></pages-top>
+  <div class="pages-body">
+    <sidebar></sidebar>    
+    <div class="pages-content">
+      <content-top></content-top>
+      <router-outlet></router-outlet>      
+    </div>
+
+  </div>
+</div>
+<div *ngIf="router.url == '/dairy/login'">
+  <router-outlet></router-outlet>
+</div>
+

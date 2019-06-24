@@ -1,0 +1,72 @@
+  <div class="row">
+      <div class="col-md-12">
+              <card cardTitle="Add Mortality Record">
+                      <form [formGroup]="mortalityForm"  (ngSubmit)="onSubmit()"  autocomplete="off"  class="my-3 border  p-3 ml-auto mr-auto" fxFlex="80%" fxFlex.xs="100%"  >  
+                          <div class="input-row"> 
+                              <mat-form-field fxFlex  appearance="outline" formGroupName="cow"  class="m-auto pr-1" >
+                                  <mat-label>select cow</mat-label>
+                                  <mat-select  placeholder="---Select one---" type="text" id="cowTag"
+                                  formControlName="cowTag" required  >                              
+                                          <mat-option *ngFor="let option of cattles | async" [value]="option.cowTag">
+                                          {{option.cowTag}}
+                                          </mat-option>                            
+                                  </mat-select>
+                              </mat-form-field> 
+
+                              <mat-form-field fxFlex  appearance="outline" formGroupName="calf"  class="m-auto pr-1" >
+                                  <mat-label>select calf</mat-label>
+                                  <mat-select  placeholder="---Select one---" type="text" id="calfId"
+                                  formControlName="calfId" required  >                              
+                                          <mat-option *ngFor="let option of calfs | async" [value]="option.calfId">
+                                          {{option.cowTag}}
+                                          </mat-option>                            
+                                  </mat-select>
+                              </mat-form-field> 
+                          </div>
+              
+                          <div class="input-row">
+                              <mat-form-field fxFlex appearance="outline" id="date" class="m-auto pl-1" >    
+                                  <mat-label>Date of death</mat-label>
+                                  <input matInput [matDatepicker]="picker" [max]="maxDate" placeholder="Date of Death" formControlName="date" id="date"
+                                      readonly (click)="picker.open()" >
+                                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                  <mat-datepicker #picker></mat-datepicker>
+                              </mat-form-field>
+                          </div> 
+              
+                          <div class="input-row">
+                              <mat-form-field fxFlex  class="w-100 m-auto" appearance="outline" >                    
+                                  <mat-label>Cause of Death</mat-label>
+                                  <textarea matInput   class="inputField" type="text" id="findings"
+                                      formControlName="findings"  placeholder="Enter cause of death"  required >
+                                    </textarea>                                         
+                              
+                              </mat-form-field> 
+                          </div>
+              
+                          <div class="input-row">
+                              <mat-form-field fxFlex  class="w-100 m-auto"  appearance="outline" >
+                                  <mat-label>Post Mortem report</mat-label>
+                                  <textarea matInput   class="inputField" type="text" id="postMortemReport"
+                                      formControlName="postMortemReport"  placeholder="Enter post Mortem Report"  required >
+                                    </textarea>      
+                              </mat-form-field>
+                          </div>
+              
+                         
+                          <!-- Submit Button -->
+                          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="50px">
+                              <button class="btn btn-primary" [disabled]="!mortalityForm.valid">ADD</button>
+                              <button class="btn btn-primary" (click)="reset()">Cancel</button>
+                             
+                              </div>
+                          </form>         
+              </card>
+          </div>
+      </div>
+      
+   
+   
+  
+  
+  

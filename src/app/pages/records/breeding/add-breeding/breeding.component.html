@@ -1,0 +1,89 @@
+
+<form [formGroup]="breedingForm"  (ngSubmit)="onSubmit()"  autocomplete="off"  class="my-3 border  p-3 ml-auto mr-auto" fxFlex="80%" fxFlex.xs="100%"  >                         
+
+    <div class="input-row" fxLayout="row" fxLayout.lt-md="column"  fxLayoutGap.lt-md="0px"> 
+        <mat-form-field fxFlex  appearance="outline" formGroupName="cow"  class="m-auto pr-1" >
+            <mat-label>select cow</mat-label>
+            <mat-select  placeholder="---Select one---" type="text" id="cowTag"
+            formControlName="cowTag" required  >                              
+                    <mat-option *ngFor="let option of cattles | async" [value]="option.cowTag">
+                    {{option.cowTag}}
+                    </mat-option>                            
+            </mat-select>
+        </mat-form-field> 
+
+        <mat-form-field fxFlex appearance="outline" id="date" class="m-auto pl-1" >    
+            <mat-label>Date of Breeding</mat-label>
+            <input matInput [matDatepicker]="picker" [max]="maxDate" placeholder="Date of Breeding" formControlName="date" id="date"
+                readonly (click)="picker.open()" >
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div> 
+
+
+    <div class="input-row" fxLayout="row" fxLayout.lt-md="column"  fxLayoutGap.lt-md="0px">
+        
+            <mat-form-field fxFlex  class="m-auto pr-1" appearance="outline" >                             
+                <mat-label>Due date</mat-label>
+                <input matInput [matDatepicker]="picker1" placeholder="Due Date" formControlName="dueDate" id="dueDate"
+                readonly (click)="picker1.open()">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field> 
+       
+
+            <mat-form-field fxFlex  class="m-auto pr-1"  appearance="outline" >
+                <mat-label>Method of Insemination</mat-label>
+                <textarea matInput   class="inputField" type="text" id="methodOfInsemination"
+                    formControlName="methodOfInsemination"  placeholder="Describe Method of Insemination Used" >
+                    </textarea>    
+                <mat-error *ngIf="hasError('methodOfInsemination','required')">Please reproductive condition of the animal is required</mat-error>
+            </mat-form-field>
+
+ 
+    </div>
+
+    <div class="input-row">
+        <mat-form-field fxFlex class="w-100 m-auto"  appearance="outline" >
+            <mat-label>Reproductive Condition</mat-label>                  
+            <textarea matInput  class="inputField" type="text" id="reproductiveCondition"
+            formControlName="reproductiveCondition"  placeholder="Describe Reproduction Condition" >
+            </textarea>
+            <mat-error *ngIf="hasError('reproductiveCondition','required')">Please reproductive condition of the animal is required</mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="input-row">
+        <mat-form-field fxFlex class="w-100 m-auto"  appearance="outline" >
+            <mat-label>Reproductive Treatment offered</mat-label>                  
+            <textarea matInput  class="inputField" type="text" id="reproductiveTreatment"
+            formControlName="reproductiveTreatment"  placeholder="Optional ,Enter Reproductive TreatMent Offered" >
+            </textarea>
+            <mat-error *ngIf="hasError('reproductiveTreatment','required')">Please reproductive condition of the animal is required</mat-error>
+        </mat-form-field>
+    </div>
+
+    
+    <!-- Submit Button -->
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="50px">
+        <button class="btn btn-primary" [disabled]="!breedingForm.valid">ADD</button>
+        <button class="btn btn-primary" (click)="reset()">Cancel</button>
+        
+        </div>
+    </form>         
+         
+  
+     
+    
+    
+    
+     
+     
+     
+    
+    
+    
+ 
+
+

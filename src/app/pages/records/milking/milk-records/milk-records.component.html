@@ -1,0 +1,124 @@
+ <div class="row">
+      <div class="col-md-12">
+        <!--  -->
+        <card cardTitle="Milking Records">
+
+          <section class="searchSection" >
+              <p>No records available</p>
+             
+              <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="milkDataSource?.length">       
+
+                  <mat-form-field color="warn" appearance="outline">
+                      <mat-select placeholder="Filter By">
+                        <mat-option *ngFor="let selected of filter"  (click)="selectChangeHandler(selected.value)" [value]="selected.value">
+                          {{ selected.value }}
+                        </mat-option>
+                      </mat-select>
+                  </mat-form-field>  
+
+                  <div class="col"  *ngIf="isCowSelected" >
+                      <!-- Query by Cow Tag -->
+                    <mat-form-field id="searchField" color="warn" appearance="outline">                    
+                        <input matInput (keyup)="searchTerm$.next($event.target.value)" placeholder="e.g T001">
+                          <mat-hint align="center">Search by Cow Tag</mat-hint>
+                      </mat-form-field>
+                  </div>
+
+                  <div class="col" *ngIf="isDateSelected" >
+                    <!-- Filter by date -->
+                      <form class="date-block" [formGroup]="dateFilterForm" >
+                          <div class="date-block__list">
+                            <mat-form-field>
+                              <input matInput 
+                                [matDatepicker]="fromDate" 
+                                placeholder="From Date" 
+                                formControlName="fromDate">
+                              <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                              <mat-datepicker #fromDate></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                            <div class="date-block__list">
+                            <mat-form-field>
+                              <input matInput 
+                                [matDatepicker]="toDate" 
+                                placeholder="To Date" 
+                                formControlName="toDate">
+                              <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                              <mat-datepicker #toDate></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+            
+                          <div>
+                            <button mat-raised-button color="accent"  (click)="applyFilter()">Filter</button>
+                          </div>
+                        </form>
+                  </div>
+                      
+            </div>
+          </section> <!-- End search section -->
+
+
+          <section class='tableSection' >
+
+
+              <mat-table class="matTable" [dataSource]="milkDataSource" *ngIf="milkDataSource?.length">
+      
+                  <ng-container matColumnDef="No">
+                      <mat-header-cell *matHeaderCellDef> No </mat-header-cell>
+                      <mat-cell *matCellDef="let row; let i = dataIndex;">{{i}}</mat-cell>         
+                  </ng-container>
+              
+                  <ng-container matColumnDef="Date">
+                    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.date}} </mat-cell>
+                  </ng-container>
+              
+              
+                  <ng-container matColumnDef="cow">
+                    <mat-header-cell *matHeaderCellDef>Cow Tag </mat-header-cell>
+                    <mat-cell  *matCellDef="let row"> {{row.cow[0].cowTag}} </mat-cell>
+                  </ng-container>  
+              
+                    <ng-container matColumnDef="milk">
+                        <mat-header-cell *matHeaderCellDef> Milk Production( Litres )</mat-header-cell>
+                        <mat-cell *matCellDef="let row">  {{row.total}} </mat-cell> 
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="details">
+                        <mat-header-cell *matHeaderCellDef> Details </mat-header-cell>
+                        <mat-cell *matCellDef="let row">  {{row.total}} </mat-cell> 
+                    </ng-container>   
+                    
+                    <!-- <ng-container matColumnDef="options">
+                        <mat-header-cell *matHeaderCellDef >options</mat-header-cell>
+                        <mat-cell  *matCellDef="let row" class="options-button">
+                            <button mat-icon-button color="accent" (click)="editRecord(row.cowTag)">
+                                <mat-icon class="mat-18">system_update</mat-icon>
+                            </button>
+      
+                            <button mat-icon-button color="warn" (click)="deleteRecord(row.cowTag)">
+                                <mat-icon class="mat-18">delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container> -->
+                    
+              
+              
+              
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>          
+          </mat-table>
+
+          <mat-paginator #paginator
+          [pageIndex]="0"
+          [pageSize]="5"
+          [pageSizeOptions]="[5, 10, 25, 100]">
+         </mat-paginator>
+          </section>
+           
+        </card>
+      </div>
+    </div>
+    
+  
+  

@@ -1,0 +1,68 @@
+
+	<div class="login-element"  >		
+		
+		
+			<div class="login-container "  >
+				<!-- <span class="login100-form-title" flex="row" >
+						Digi Dairy Production System 
+				</span> -->
+				<div class="login-wrapper">
+						<span class="login100-form-title" flex="row" >
+								Digi Dairy Production System 
+						</span>
+		
+					<!-- Template Header starts -->
+					<div class="login-box-header">
+						<img class="img-responsive" src="assets/images/cow.ico">	
+					</div>
+					<!-- Template Header ends -->
+			
+					<!-- Template Body starts -->
+					<div class="login-box-body"> 
+		
+						<form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>							
+								
+								<div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger">								
+										Wrong username or password Entered																	
+								</div>		
+
+
+								<div class="input-row">
+									<mat-form-field fxFlex  class="w-100 m-auto" appearance="outline" class="m-auto pr-1" >                             
+										<mat-label>Username </mat-label>
+										<input  matInput placeholder="email address" type="text"  name="username" [(ngModel)]="form.username" #username="ngModel"   />
+											
+									</mat-form-field>
+								</div> 
+								<div class="input-row">							  
+									<mat-form-field fxFlex class="w-100 m-auto"  appearance="outline" class="m-auto pl-1" >
+										<mat-label>Password </mat-label>
+										<input type="password" name="password" [(ngModel)]="form.password" #password="ngModel" matInput placeholder="Password" />
+									
+									</mat-form-field>
+								</div>
+
+							
+						
+							<div class="container-login100-form-btn">
+									<div class="wrap-login100-form-btn">
+										<div class="login100-form-bgbtn"></div>
+										<button  [disabled]="!f.form.valid" class="login100-form-btn">
+											Login
+										</button>
+									</div>									
+							
+							</div>
+							
+						</form>
+					</div>
+	
+				</div>
+			
+				
+			</div>
+		</div>
+		<!-- Writing markup for login ends -->
+		
+	
+

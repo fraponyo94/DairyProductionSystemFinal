@@ -1,0 +1,70 @@
+<div class="row">
+<div class="col-md-12">
+        <card cardTitle="Add Milk Record">
+                <form [formGroup]="milkingForm"  (ngSubmit)="onSubmit()"  autocomplete="off"  class="my-3 border  p-3 ml-auto mr-auto" fxFlex="80%" fxFlex.xs="100%"  >  
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column"  fxLayoutGap.lt-md="0px"> 
+                        <mat-form-field fxFlex  appearance="outline" formGroupName="cow"  class="m-auto pr-1" >
+                            <mat-label>select cow</mat-label>
+                            <mat-select  placeholder="---Select one---" type="text" id="cowTag"
+                            formControlName="cowTag" required (click) ="populateForm(option.cowTag,this.milkingForm['date'].value)" >                              
+                                    <mat-option *ngFor="let option of cattles | async" [value]="option.cowTag">
+                                    {{option.cowTag}}
+                                    </mat-option>                            
+                            </mat-select>
+                        </mat-form-field> 
+        
+                        <mat-form-field fxFlex appearance="outline" id="date" class="m-auto pl-1" >    
+                            <mat-label>Milking date</mat-label>
+                            <input matInput [matDatepicker]="picker" [max]="maxDate" placeholder="Milking Date" formControlName="date" id="date"
+                                readonly (click)="picker.open()" (select)="populateForm(this.milkingForm['cowwTag'].value,this.milkingForm['date'].value)">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div> 
+        
+                    <div class="input-row">
+                        <mat-form-field fxFlex  class="w-100 m-auto" appearance="outline" >                    
+                                <mat-label>First Milking Session(litres)</mat-label>
+                                <input matInput   class="inputField" type="number" id="firstMilking"
+                                    formControlName="firstMilking"  placeholder="0.00" [min]=0 />  
+                                <mat-error *ngIf="hasError('firstMilking','min')">Please enter positive values only</mat-error>                                          
+                        
+                        </mat-form-field> 
+                    </div>
+        
+                    <div class="input-row">
+                        <mat-form-field fxFlex  class="w-100 m-auto"  appearance="outline" >
+                            <mat-label>Second Milking Session(litres)</mat-label>
+                                <input matInput   class="inputField" type="number" id="secondMilking"
+                                    formControlName="secondMilking"  placeholder=" 0.00"  /> 
+                                <mat-error *ngIf="hasError('secondMilking', 'min')">Please enter positive values only</mat-error>        
+                        </mat-form-field>
+                    </div>
+        
+                    <div class="input-row">
+                        <mat-form-field fxFlex  class="w-100 m-auto"  appearance="outline" >
+                            <mat-label>other Milking Session(litres)</mat-label>
+                            <input matInput   class="inputField" type="number" id="otherMilking"
+                                formControlName="otherMilking"  placeholder="0.00" class="w-100 mx-0"  />
+                            <mat-error *ngIf="hasError('otherMilking', 'min')">Please enter positive values only</mat-error>        
+                        </mat-form-field>
+                    </div>
+        
+                    <div class="input-row">
+                        <mat-form-field fxFlex class="w-100 m-auto"  appearance="outline" >
+                            <mat-label>Remarks</mat-label>
+                            <textarea matInput   class="inputField" type="number" id="remarks"
+                                formControlName="remarks"  placeholder="provide remarks if any"  ></textarea>
+                        </mat-form-field>
+                    </div>
+        
+                    <!-- Submit Button -->
+                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="50px">
+                        <button class="btn btn-primary" [disabled]="!milkingForm.valid">ADD</button>
+                        <button class="btn btn-primary" (click)="reset()">Cancel</button>
+                       
+                        </div>
+                    </form>         
+        </card>
+    </div>
+</div>

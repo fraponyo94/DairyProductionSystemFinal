@@ -1,0 +1,5 @@
+<div class="content-wrap" *ngIf="router.url != '/dairy/login'" >
+  <a routerLink="/dairy/profile" *ngIf="routeTitle !== 'Profile'" (click)="returnHome()">Dairy</a>
+  <i *ngIf="routeTitle !== 'Profile'">/</i>
+  <span>{{routeTitle}}</span>
+</div>
