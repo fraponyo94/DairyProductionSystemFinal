@@ -20,12 +20,15 @@ import { CalfService } from '../services/calf.service';
 })
 export class MortalityComponent implements OnInit {
   maxDate = new Date();
+  isCalf: boolean = false;
+  isCow: boolean = false;
 
   constructor(private f: FormBuilder , private cattleService: CattleService, private mortalityService: MortalityService,
               private datePipe: DatePipe, private messagesService: MessagesService,private calfService:  CalfService) { }
 
   //
   mortalityForm: FormGroup;
+  calfMortalityForm: FormGroup;
   cattles: Observable<cattle>;
   calfs: Observable<calf>;
 
@@ -35,17 +38,29 @@ export class MortalityComponent implements OnInit {
       cow: this.f.group({
         cowTag: ['',Validators.required]
       }),
-      calf: this.f.group({
-         calfId: ['',Validators.required]
-      }),
+
       postMortemReport: [''],
       findings: [''],
       date: [new Date()]
-      
+
     });
   }
 
+
+   createCalfMortalityForm(){
+      this.calfMortalityForm = this.f.group({
+        calf: this.f.group({
+          calfId: ['', Validators.required]
+        }),
+        postMortemReport: [''],
+        findings: [''],
+        date: [new Date()]
+
+      });
+   }
+
   ngOnInit() {
+    this. createCalfMortalityForm();
     this.createMortalityForm();
     this.getCattles();
     this.getCalfs();
@@ -57,19 +72,19 @@ export class MortalityComponent implements OnInit {
       return;
     } else {
     const formData = this.mortalityForm.value;
-    formData.date = this.datePipe.transform(this.mortalityForm.controls.date.value, "dd-MM-yyyy");   
+    formData.date = this.datePipe.transform(this.mortalityForm.controls.date.value, "dd-MM-yyyy");
     console.log(JSON.stringify(formData));
 
-    this.mortalityService.addMortalityRecords(formData)  
+    this.mortalityService.addMortalityRecords(formData)
       .subscribe(
         res => {
           this.success();
 
         },
         (err: HttpErrorResponse) => {
-          console.log(err.error);
-          console.log(err.message);
-          this.handleError(err);
+          // console.log(err.error);
+          // console.log(err.message);
+          // this.handleError(err);
         }
       );
 
@@ -78,7 +93,7 @@ export class MortalityComponent implements OnInit {
 
   }
 
-    
+
 // get cattles available for autocomplete functionality
 getCattles(): void {
   this.cattles = this.cattleService.getAllCattleRecords();
@@ -96,7 +111,18 @@ getCalfs(): void {
   }
 
 
-  
+  calf(){
+    this.isCow =false;
+    this.isCalf = true;
+  }
+
+  cow(){
+    this.isCow = true;
+    this.isCalf = false;
+  }
+
+
+
   private success() {
     this.messagesService.openDialog('Success', ' Saved successfully!');
   }

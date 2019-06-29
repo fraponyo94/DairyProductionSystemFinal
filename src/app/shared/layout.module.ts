@@ -11,13 +11,17 @@ import { MenuComponent } from './layouts/menu/menu.component';
 import { SidebarComponent } from './layouts/sidebar/sidebar.component';
 import { ContentTopComponent } from './layouts/content-top/content-top.component';
 import { PagesTopComponent } from './layouts/pages-top/pages-top.component';
+import { MaterialModule } from './material/material.module';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 
 @NgModule({
     imports: [
         CommonModule,
         RouterModule,
-        SharedModule
+        SharedModule,
+        MaterialModule,
+        MDBBootstrapModule.forRoot()
     ],
     providers: [
         GlobalService

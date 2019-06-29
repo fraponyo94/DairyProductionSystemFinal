@@ -4,37 +4,26 @@
   </div>
   <div class="col-md-8">
     <div class="row card card-block">
-      <div class="col-md-6 form-group">
-        <label class="control-label">Username</label>
-        <input type="text" class="form-control" placeholder="Username">
+        <form [formGroup]="profile"  autocomplete="off">
+         <div class="col-md-6 form-group">   
+          <label class="control-label">Full Name</label>
+          <input matInput type="text" class="form-control" id="name" [disabled]
+                             formControlName="name" placeholder="Fredrick Aponyo" />
+        </div>
+
+        <div class="col-md-6 form-group">
+          <label class="control-label">Email address</label>
+          <input matInput type="text" class="form-control" id="email" [disabled]
+                             formControlName="email" placeholder="fraponyo@gmail.com"/>
+          </div>
+
+        <div class="col-md-4 form-group">
+          <label class="control-label">Phone Number</label>
+         <input matInput type="text" class="form-control" id="phoneNumber" [disabled]
+                             formControlName="phoneNumber" placeholder="0722718231"/>   
       </div>
-      <div class="col-md-6 form-group">
-        <label class="control-label">Userpost</label>
-        <input type="text" class="form-control" placeholder="Userpost">
-      </div>
-      <div class="col-md-4 form-group">
-        <label class="control-label">Username</label>
-        <input type="text" class="form-control" placeholder="Username">
-      </div>
-      <div class="col-md-4 form-group">
-        <label class="control-label">Username</label>
-        <input type="text" class="form-control" placeholder="Username">
-      </div>
-      <div class="col-md-4 form-group">
-        <label class="control-label">Username</label>
-        <input type="text" class="form-control" placeholder="Username">
-      </div>
-      <div class="col-md-12 form-group">
-        <label class="control-label">Username</label>
-        <input type="text" class="form-control" placeholder="Username">
-      </div>
-      <div class="col-md-12 form-group">
-        <label class="control-label">Username</label>
-        <textarea class="form-control" placeholder="Username"></textarea>
-      </div>
-      <div class="col-md-12">
-        <button class="btn btn-primary">Update Profile</button>
-      </div>
-    </div>
+
+     </form>
+
   </div>
 </div>

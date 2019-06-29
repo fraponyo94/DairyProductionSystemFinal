@@ -3,11 +3,6 @@
 
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ErrorMatcherService, errorMessages } from '../../services/services/form-validation/form-validators.service';
-
-
-
-
 
 @Component({
   selector: 'app-add-edit-form',  
@@ -17,27 +12,10 @@ import { ErrorMatcherService, errorMessages } from '../../services/services/form
 })
 
 export class AddEditFormComponent implements OnInit {
+  
 
   maxDate = new Date();
   public addEditEmployeeForm: FormGroup;
-
-
-  public matcher = new ErrorMatcherService();
-  errors = errorMessages;  // Used on form html.
- 
- 
-
-
-
-  public formErrors = {
-     employeeId: '',
-     name: '',
-     email: '',
-     phoneNumber: '',
-     dateOfEmployment:''   
-
-  };
-
 
 
   constructor(
@@ -48,25 +26,28 @@ export class AddEditFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.createForm();
+    this.createForm(); 
     
   }
 
 
   // The reactive model that is bound to the form.
-
   public createForm() {
     this.addEditEmployeeForm = this.fb.group({
-      employeeId: [''],
+      employeeId: ['',Validators.compose([Validators.required,Validators.minLength(6)])],
       name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', Validators.required ],
+      email: ['',  Validators.compose([Validators.required,Validators.email])],
+      phoneNumber: ['', Validators.compose([Validators.required,Validators.minLength(9),Validators.maxLength(12)]) ],
       dateOfEmployment: [new Date()],
     
     });
   }
 
- 
+
+
+  // Get form fields 
+  get f() { return this.addEditEmployeeForm.controls; }
+
   
 }
 

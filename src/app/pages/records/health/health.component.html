@@ -1,6 +1,6 @@
  <div class="row">
     <div class="col-md-12">
-        <card cardTitle="Health Records" >
+        <card cardTitle="Manage Animal Medical Records" >
             <mat-tab-group  (selectedTabChange)="executeSelectedChange($event)">
                 <mat-tab label="Cow"> 
                    <app-cattle-health></app-cattle-health>
@@ -8,6 +8,9 @@
                 <mat-tab label="Calf">
                     <app-calf-health></app-calf-health>
                 </mat-tab>
+                <mat-tab label="Available health Records">
+                        <app-health-list></app-health-list>
+                </mat-tab>             
                
             </mat-tab-group>
         </card>

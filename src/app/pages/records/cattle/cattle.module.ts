@@ -13,8 +13,12 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { CattleListComponent } from './cattle-list/cattle-list.component';
 import { CalfDetailsComponent } from './calf/calf-details/calf-details.component';
 
+import { UpdateCattleComponent } from './update-cattle/update-cattle.component';
+import { UpdateDatatableService } from '../services/services/update-datatable.service';
+
+
 @NgModule({
-  declarations: [ CattleComponent,AddCattleComponent,CalfComponent, CattleListComponent, CalfDetailsComponent],
+  declarations: [ CattleComponent,AddCattleComponent,CalfComponent, CattleListComponent, CalfDetailsComponent, UpdateCattleComponent],
   imports: [
     CommonModule,
     routing,
@@ -24,8 +28,11 @@ import { CalfDetailsComponent } from './calf/calf-details/calf-details.component
     FlexLayoutModule,
     MDBBootstrapModule.forRoot() 
   ],
+  providers: [UpdateDatatableService],
+
   entryComponents: [
-    CalfDetailsComponent
+    CalfDetailsComponent,
+    UpdateCattleComponent
   ],
 })
 export class CattleModule { }

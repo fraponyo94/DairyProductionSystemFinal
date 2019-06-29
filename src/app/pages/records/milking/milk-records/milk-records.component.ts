@@ -1,35 +1,42 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatDialog, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatDialog, MatPaginator, MatSort } from '@angular/material';
 
 import { merge, Subject } from 'rxjs';
 import { startWith, switchMap, tap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormControl } from '@angular/forms';
-import { milkRecords } from '../../shared/model/models ';
+import {  milking } from '../../shared/model/models ';
 import { MilkingService } from '../../services/milking/milking.service';
 import { MessagesService } from '../../services/services/messages-service/messages.service';
 import { ConfirmService } from '../../services/services/confirm-dialog/confirm.service';
+import { UpdateMilkingRecordsComponent } from '../update-milking-records/update-milking-records.component';
+import { PdfServiceService } from '../../services/pdf-service.service';
 
 @Component({
   selector: 'app-milk-records',
   templateUrl: './milk-records.component.html',
   styleUrls: ['./milk-records.component.css']
 })
-export class MilkRecordsComponent implements AfterViewInit {
+export class MilkRecordsComponent implements OnInit {
   isCowSelected : boolean;
   isDateSelected : boolean;
   position : number = 1;
 
-  private idColumn = 'employeeId';
+  private idColumn = 'id';
   public dataLength: number;
+  data: milking[];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   public displayedColumns = [
     'No',
     'Date',
     'cow',
-    'milk',
-    'details' 
+    'first',
+    'second',
+    'other',
+    'remarks',
+    'option' 
   ];
 
 
@@ -61,7 +68,7 @@ get fromDate() { return this.dateFilterForm.get('fromDate').value; }
 get toDate() { return this.dateFilterForm.get('toDate').value; }
 
 // Milk records
-public milkDataSource = new MatTableDataSource<milkRecords>();
+public milkDataSource = new MatTableDataSource<milking>();
 
 // Query Criteria
   public searchTerm$ = new Subject<string>();
@@ -69,7 +76,7 @@ public milkDataSource = new MatTableDataSource<milkRecords>();
 
 // Constructor
   constructor( private httpService: MilkingService, public dialog: MatDialog, private confirmService: ConfirmService,
-               private messagesService: MessagesService) {
+               private messagesService: MessagesService,private pdfService: PdfServiceService) {
 
                 // Filter
                 this.milkDataSource.filterPredicate = (data, filter) =>{
@@ -82,10 +89,11 @@ public milkDataSource = new MatTableDataSource<milkRecords>();
 
 
   // Initialise parameters in AfterViewInit
-  ngAfterViewInit() {
+  ngOnInit() {
     this.isCowSelected = false;
     this.isDateSelected = false;
     this.milkDataSource.paginator = this.paginator;
+    this.milkDataSource .sort = this.sort;
     setTimeout(() => {
       this.getAllRecords();
     }, 200);
@@ -96,28 +104,32 @@ public milkDataSource = new MatTableDataSource<milkRecords>();
     this.milkDataSource.filter = ''+Math.random();
   }
 
+
+   // Filter
+   public doFilter = (value: string) => {
+    this.milkDataSource.filter = value.trim().toLocaleLowerCase();
+  }
+
+
 // Retrieve All Milk Records
   private getAllRecords(): any {
     // Kills the paginator if omitted.
     this.milkDataSource.paginator = this.paginator;
 
-    merge(this.paginator.page).pipe(
-      // Tap called only with page forward.
-      tap(val => console.log('page forward in getAllRecords')),
-      startWith(null),  // Delete this and no data is downloaded.
-      switchMap(() => {
-        console.log('paginator.pageIndex: ', this.paginator.pageIndex);
-        console.log('paginator.length: ', this.paginator.length);  // Should show all records for the second page, index 1.
-        return this.httpService.getMilkingRecords();
-      }),
-    )
+    return this.httpService.getMilkingRecords()
+    //   }),
+    // )
 
-    .subscribe(data => {
-      console.log(data.length);
-      const milkRecords: milkRecords[] = data;
+    .subscribe(res => {
+      console.log(res.length);
+// tslint:disable-next-line: no-shadowed-variable
+      const milkRecords: milking[] = res;
       this.dataLength = milkRecords.length;
-
+      console.log(milkRecords);
       this.milkDataSource.data = milkRecords;
+      this.data = milkRecords;
+      
+    
     },
     (err: HttpErrorResponse) => {
     console.log(err.error);
@@ -138,8 +150,23 @@ public milkDataSource = new MatTableDataSource<milkRecords>();
       this.isCowSelected = true;
       this.isDateSelected = false;
     }
-
-
 }
+
+// ----------- EDIT & UPDATE -------------
+public editRecord(recordId) {
+  this.dialog.open(UpdateMilkingRecordsComponent, {
+    data: { recordId, idColumn: this.idColumn, paginator: this.paginator, dataSource: this.milkDataSource },
+    panelClass: 'full-width-dialog'
+  });
+}
+
+
+  // Report (method to be called on the UI)
+  downloadReport() {     
+    const doc = this.httpService.pdfTheme(this.data.length,this.data);
+    this.pdfService.pdf('milking',doc);
+   
+  }
+
 
 }

@@ -14,7 +14,7 @@
 
     <button disabled *ngIf="!addEditForm.addEditEmployeeForm.valid"  mat-raised-button color="primary">Add Employee</button>
     <button *ngIf="addEditForm.addEditEmployeeForm.valid" mat-raised-button (click)="update(addEditForm.addEditEmployeeForm.value)"  mat-raised-button color="primary">Update Employee</button>  
-    <button mat-raised-button (click)="dialogRef.close(true)">Cancel Edit </button>
+    <button mat-raised-button (click)="dialogRef.close(true)">Cancel</button>
   </div>
 
   <br><br>

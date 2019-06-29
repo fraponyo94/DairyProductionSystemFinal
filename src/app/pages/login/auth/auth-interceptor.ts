@@ -5,39 +5,29 @@ import { TokenStorageService } from './auth-services/token-storage.service';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { AuthService } from './auth-services/auth.service';
 
 
 const TOKEN_HEADER_KEY = 'Authorization';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {    
-    constructor(private token: TokenStorageService, private router: Router) { }
+    constructor(private authenticationService: AuthService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        let authReq = request;
-        const tokens = this.token.getToken();
-        if (!request.headers.has('Content-Type')) {
-            request = request.clone({ headers: request.headers.set('Content-Type', 'application/json') });
+        // add authorization header with jwt token if available
+        let currentUser = this.authenticationService.currentUserValue;
+        if (currentUser && currentUser.accessToken) {
+            request = request.clone({
+                setHeaders: {
+                    Authorization: `Bearer ${currentUser.accessToken}`
+                }
+            });           
         }
- 
-        if (tokens != null) {
-            authReq = request.clone({ headers:  request.headers.set(TOKEN_HEADER_KEY, 'Bearer '+tokens) });
-        }
-        return next.handle(authReq).pipe(
-            map((event: HttpEvent<any>) => {
-                if (event instanceof HttpResponse) {
-                    console.log('event', event);
-                   }
-                return event;
-            }),
-            catchError((error: HttpErrorResponse) => {
-                let data = {};
-                data = {                  
-                    message: error.message
-                    
-                };
-                console.log(data);
-                return throwError(error);
-            }));
+
+        return next.handle(request);
     }
+
+
+
 }

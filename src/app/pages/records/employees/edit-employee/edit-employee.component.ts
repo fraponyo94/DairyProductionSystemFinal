@@ -13,7 +13,7 @@ import { Employee } from '../../shared/model/models ';
 import { EmployeeService } from '../../services/employee.service';
 import { UpdateDatatableService } from '../../services/services/update-datatable.service';
 import { MessagesService } from '../../services/services/messages-service/messages.service';
-import { FormErrorsService } from '../../services/services/form-validation/form-errors.service';
+
 
 
 
@@ -28,8 +28,7 @@ import { FormErrorsService } from '../../services/services/form-validation/form-
 
 export class EditEmployeeComponent implements AfterViewInit {
 
-  
-  private formValue: Employee;
+
 
   private recordId: number;
   private idColumn;
@@ -48,8 +47,7 @@ export class EditEmployeeComponent implements AfterViewInit {
     // Used in modal for close()
     public dialogRef: MatDialogRef<EditEmployeeComponent>,        
     private updateDatatableService: UpdateDatatableService,
-    private messagesService: MessagesService,
-    public formErrorsService: FormErrorsService,
+    private messagesService: MessagesService
   ) {}
   
 

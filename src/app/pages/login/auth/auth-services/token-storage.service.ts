@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { JwtResponse } from '../jwt-response';
 
 const TOKEN_KEY = 'Bearer';
 const USERNAME_KEY = 'username';
@@ -59,4 +60,16 @@ export class TokenStorageService {
 
     return this.roles;
   }
+
+  // save current user
+  public currentUser(json: any){
+      window.sessionStorage.removeItem('currentUser');
+      window.sessionStorage.setItem('currentUser', json);
+  }
+
+  // Get current user
+   // save current user
+   public get getcurrentUser(){
+     return sessionStorage.getItem('currentUser');
+}
 }

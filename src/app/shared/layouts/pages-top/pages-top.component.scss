@@ -81,23 +81,23 @@
 .search-group {
     position: absolute;
     top: 50%;
-    right: 170px;
+    right: 20px;
     transform: translate(0, -50%);
     width: 340px;
-    background: $border-color;
-    border: 1px solid $border-color;
+    //background: $border-color;
+    //border: 1px solid $border-color;
     border-radius: 2px;
     overflow: hidden;
-    .search-input {
-        width: 300px;
-        height: 40px;
-        background: transparent;
-        border: none;
-        outline: none;
-        color: $sidebar-fonts-color;
-        font-size: $sm-text;
-        text-indent: 1.5em;
-    }
+    // .search-input {
+    //     width: 300px;
+    //     height: 40px;
+    //     background: transparent;
+    //     border: none;
+    //     outline: none;
+    //     color: $sidebar-fonts-color;
+    //     font-size: $sm-text;
+    //     text-indent: 1.5em;
+    // }
     .search-btn {
         position: relative;
         top: -1px;
@@ -157,7 +157,7 @@
         width: 11px;
         height: 11px;
         background: $primary;
-        border: 2px solid $sidebar-bg;
+       // border: 2px solid $sidebar-bg;
         border-radius: 50%;
     }
 }

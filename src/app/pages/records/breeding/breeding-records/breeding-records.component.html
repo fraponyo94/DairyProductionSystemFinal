@@ -3,79 +3,81 @@
   <!-- Data table starts here -->
   <div class="row">
       <div class="col-md-12">
-        <card cardTitle="Breeding Records">
+        <card cardTitle="">
+            <div fxLayout="row" fxLayoutAlign="space-around center">
 
-
+                <span>
+                     Reload Records:
+                    <button mat-icon-button (click)="getAllBreedingHistory ()">
+                      <mat-icon>refresh</mat-icon>
+                    </button>                   
+                 </span>
+                
+                  
+              </div>
 
             <section class="searchSection" >
-                <p>No records available</p>
+                <p *ngIf="!dataSource.data.length > 0">No breeding records available </p>
                
-                <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="dataSource?.length">      
+                <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="dataSource.data.length > 0">      
   
                     <mat-form-field fxFlex="20%">
-                        <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
-                    </mat-form-field>                    
+                        <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter by any Column Value">
+                    </mat-form-field>   
+                    
+                    <span>
+                        Export to pdf:
+                       <a (click)="downloadReport()" target="_blank">
+                          <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                       </a>
+                      
+                    </span> 
               </div>
 
             </section> <!-- End search section -->
   
   
-            <section class='tableSection' *ngIf="dataSource?.length"  >
+            <section class='tableSection' [hidden]="isLoading"  *ngIf="dataSource.data.length > 0">
   
   
-                <mat-table class="matTable" [dataSource]="dataSource" >
+                <mat-table  #table class="matTable" [dataSource]="dataSource" matSort class="mat-cell" >
         
                     <ng-container matColumnDef="No">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> No </th>
-                        <td mat-cell *matCellDef="let row; let i = dataIndex;">{{i}} </td>            
+                      <mat-header-cell *matHeaderCellDef mat-sort-header> No </mat-header-cell>
+                        <mat-cell *matCellDef="let row; let i = index;">{{i+1}} </mat-cell>            
                       </ng-container>        
              
                      <ng-container matColumnDef="cowtag">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cow Tag </th>
-                        <td mat-cell *matCellDef="let element"> {{element.cow[0].cowTag}} </td>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Cow Tag </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.cow.cowTag}} </mat-cell>
                       </ng-container>         
                      
             
                       <ng-container matColumnDef="date">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date of Breeding </th>
-                        <td mat-cell *matCellDef="let element"> {{element.date | date}} </td>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Date of Breeding </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.date }} </mat-cell>
                       </ng-container>
                       
                       <ng-container matColumnDef="dueDate">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Due Date </th>
-                          <td mat-cell *matCellDef="let element"> {{element.dueDate | date}} </td>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header> Due Date </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.dueDate}} </mat-cell>
                         </ng-container>
-          
-                      
-                      
-                    
-                      <ng-container matColumnDef="details">
-                        <th mat-header-cell *matHeaderCellDef> calfs </th>
-                        <td mat-cell *matCellDef="let element">
-                          <button mat-icon-button color="primary" (click)="redirectToDetails(element.cowTag[0].cowTag)">
-                              <mat-icon class="mat-18">reorder</mat-icon>
-                          </button>
-                        </td>
-                      </ng-container>
-                    
-                      <ng-container matColumnDef="update">
-                          <th mat-header-cell *matHeaderCellDef> Update </th>
-                          <td mat-cell *matCellDef="let element">
-                            <button mat-icon-button color="accent" (click)="redirectToUpdate(element.cowTag[0].cowTag)">
-                                <mat-icon class="mat-18">system_update</mat-icon>
-                            </button>
-                          </td>
-                        </ng-container>
-                    
-                        <ng-container matColumnDef="delete">
-                            <th mat-header-cell *matHeaderCellDef> Delete </th>
-                            <td mat-cell *matCellDef="let element">
-                              <button mat-icon-button color="warn" (click)="redirectToDelete(element.cowTag[0].cowTag)">
-                                  <mat-icon class="mat-18">delete</mat-icon>
-                              </button>
-                            </td>
+
+                        <ng-container matColumnDef="reproductiveCondition">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Reproductive Condition </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.reproductiveCondition}} </mat-cell>
                           </ng-container>
-                
+
+                          <ng-container matColumnDef="methodOfInsemination">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> Method of Insemination </mat-header-cell>
+                              <mat-cell *matCellDef="let element"> {{element.methodOfInsemination}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="reproductiveTreatment">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Treatment offered </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.reproductiveTreatment}} </mat-cell>
+                            </ng-container>        
+                      
                       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>          
             </mat-table>

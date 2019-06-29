@@ -16,8 +16,8 @@ import { MessagesService } from '../../services/services/messages-service/messag
 
 @Component({
   selector: 'app-calf-health',
-  templateUrl: './calf-health.component.html',
-  styleUrls: ['./calf-health.component.css']
+  templateUrl: './calf-health.component.html'
+
 })
 export class CalfHealthComponent implements OnInit {
   calfHealthForm: FormGroup;
@@ -47,8 +47,8 @@ export class CalfHealthComponent implements OnInit {
       treatment: [''],
       remarks: [''],
       nameOfveterinaryDoctor: [''],
-      contactofVeterinaryDoctor: [],
-      costOfTreatMent: [],
+      contactofVeterinaryDoctor: []
+     
  
     });
   }
@@ -80,9 +80,9 @@ export class CalfHealthComponent implements OnInit {
 
         },
         (err: HttpErrorResponse) => {
-          console.log(err.error);
-          console.log(err.message);
-          this.handleError(err);
+          // console.log(err.error);
+          // console.log(err.message);
+          // this.handleError(err);
         }
       );
 

@@ -1,14 +1,18 @@
 <div class="row">
     <div class="col-md-12">
-            <card cardTitle="Add Cow Details" >
-                    <form [formGroup]="addCattleForm"  (ngSubmit)="onSubmit()"  autocomplete="off"  class="my-3 border  p-3 ml-auto mr-auto" fxFlex="80%" fxFlex.xs="100%" >  
+            <card cardTitle="Add Available Cattle " >
+                    <form [formGroup]="addCattleForm"  (ngSubmit)="onSubmit()"  autocomplete="off"  class="my-3 border  
+                    p-3 ml-auto mr-auto" fxFlex="80%" fxFlex.xs="100%" >  
                         
                        <diV class="input-row">
                           <mat-form-field fxFlex  class="w-100 m-auto" appearance="outline" >
                               <mat-label>Cow Tag Number</mat-label>
                               <input matInput  class="inputField" type="text" id="cowTag"
-                                  formControlName="cowTag"  placeholder="T001" />                      
-                              <mat-error *ngIf="hasError('cowTag', 'required')">Please provide cow tag number</mat-error>
+                                  formControlName="cowTag"  placeholder="e.g T001" />                                  
+                                  <mat-error *ngIf="addCattleForm.controls.cowTag.invalid && addCattleForm.controls.cowTag.touched" >
+                                    <mat-error  *ngIf="addCattleForm.controls.cowTag.errors.required">Cow tag  is required.</mat-error>
+                                    <mat-error *ngIf="addCattleForm.controls.cowTag.errors.minlength">Cow tag must be atleast 3 characters/digits long.</mat-error>
+                                  </mat-error>                            
                             </mat-form-field> 
                        </diV>
 
@@ -46,8 +50,8 @@
             
                         <!-- Submit Button -->
                         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="50px">
-                            <button class="btn btn-primary" [disabled]="!addCattleForm.valid">ADD</button>
-                            <button class="btn btn-primary" (click)="reset()">Cancel</button>
+                            <button mat-raised-button color="primary"   [disabled]="!addCattleForm.valid">ADD Cattle</button>
+                            <button mat-raised-button color="primary"  (click)="reset()">Cancel</button>
                            
                             </div>
                         </form>         

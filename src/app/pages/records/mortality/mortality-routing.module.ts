@@ -1,12 +1,12 @@
 
 import { Routes, RouterModule } from '@angular/router';
-import { MortalityComponent } from './mortality.component';
+import { MainMortalityComponent } from './main-mortality/main-mortality.component';
 
 
 const childRoutes: Routes = [
 
           { path: '', redirectTo: 'mortality-records', pathMatch: 'full' },
-          { path: 'mortality-records', component: MortalityComponent }
+          { path: 'mortality-records', component: MainMortalityComponent }
 ];
 
 export const routing = RouterModule.forChild(childRoutes);

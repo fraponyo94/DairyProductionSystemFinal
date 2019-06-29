@@ -6,7 +6,7 @@ import { MatDialogRef} from '@angular/material';
 import { AddEditFormComponent } from '../add-edit-form/add-edit-form.component';
 import { EmployeeService } from '../../services/employee.service';
 import { MessagesService } from '../../services/services/messages-service/messages.service';
-import { FormErrorsService } from '../../services/services/form-validation/form-errors.service';
+
 
 
 
@@ -27,13 +27,12 @@ export class AddEmployeeComponent {
   constructor(
     private httpService: EmployeeService,
     public dialogRef: MatDialogRef<AddEmployeeComponent>,  // Used by the html component.
-    private messagesService: MessagesService,
-    public formErrorsService: FormErrorsService
+    private messagesService: MessagesService
   ) { }
 
 
   reset() {
-    this.addEmployeeForm.addEditEmployeeForm.createForm();
+   // this.addEmployeeForm.addEditEmployeeForm.createForm();
     this.addEmployeeForm.addEditEmployeeForm.reset();
   }
 
@@ -54,14 +53,11 @@ export class AddEmployeeComponent {
           console.log(err.error);
           console.log(err.message);
           this.handleError(err);
-          return this.addEmployeeForm.addEditEmployeeForm;
+          
         }
       );
     } else {
-      this.addEmployeeForm.formErrors = this.formErrorsService.validateForm(
-        this.addEmployeeForm.addEditEmployeeForm,
-        this.addEmployeeForm.formErrors, false
-      );
+     
     }
     
     
@@ -74,7 +70,7 @@ export class AddEmployeeComponent {
   }
 
   private handleError(error) {
-    this.messagesService.openDialog('','Error saving,Could not be saved successfully.Please recheck your inputs before resubmiting.');
+    this.messagesService.openDialog('Server Error','OOps,your request could not be processed. Try again later ith valid');
   }
 
 }

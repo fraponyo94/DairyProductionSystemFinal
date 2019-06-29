@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-main-breeding',
-  templateUrl: './main-breeding.component.html',
-  styleUrls: ['./main-breeding.component.css']
+  templateUrl: './main-breeding.component.html'
+  
 })
 export class MainBreedingComponent implements OnInit {
 

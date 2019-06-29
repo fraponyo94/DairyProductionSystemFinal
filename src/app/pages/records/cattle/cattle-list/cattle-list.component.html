@@ -1,25 +1,34 @@
   <!-- Data table starts here -->
   <div class="row">
     <div class="col-md-12">
-      <card cardTitle="Cattle Records">
-
+      <card cardTitle="Available cow/calf records">
           
           <section class="searchSection" >
-              <p>No records available</p>
+              <p *ngIf="!cattleDateSource.data.length > 0">No records available</p>
              
-              <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="cattleDateSource.data.length > 0">       
+              <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="cattleDateSource.data.length > 0">            
+                  
 
                 <!-- Name query. -->
+                <span>
                   <mat-form-field fxFlex="20%">
                     <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
                     <mat-hint align="center">Search </mat-hint>
                   </mat-form-field>
+                </span>
+                <span>
+                    Export to pdf:
+                   <a (click)="downloadReport()" target="_blank">
+                      <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                   </a>
+                  
+                </span>                 
                       
             </div>
           </section> <!-- End search section -->
 
 
-          <section class='tableSection' *ngIf="cattleDateSource.data.length > 0">
+          <section class='tableSection' [hidden]="isLoading" *ngIf="cattleDateSource.data.length > 0">
             
               <mat-table class="matTable" [dataSource]="cattleDateSource" matSort >
 
@@ -27,7 +36,7 @@
           
                     <ng-container matColumnDef="No">
                       <mat-header-cell *matHeaderCellDef mat-sort-header> No </mat-header-cell>
-                      <mat-cell *matCellDef="let row; let i = dataIndex;">{{i}} </mat-cell>
+                      <mat-cell *matCellDef="let row; let i = index;">{{i+1}} </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="tag">
@@ -42,43 +51,43 @@
 
                 <ng-container matColumnDef="date">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Date Acquired </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.dateAcquired | date}}  </mat-cell>
+                    <mat-cell *matCellDef="let element"> {{element.dateAcquired}}  </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="calf">
                     <mat-header-cell *matHeaderCellDef> Calf</mat-header-cell>
                     <mat-cell  *matCellDef="let element">
-                        <button mat-icon-button color="primary" (click)="redirectToCalfDetails(element.cowTag)">
-                            <mat-icon class="mat-18">reorder</mat-icon>
+                        <button mat-icon-button color="accent" (click)="redirectToCalfDetails(element.cowTag)">
+                          <i class="fa fa-bars" aria-hidden="true"></i>
                         </button>
                       </mat-cell>
                 </ng-container>
 
               <ng-container matColumnDef="options">
                   <mat-header-cell *matHeaderCellDef >options</mat-header-cell>
-                  <mat-cell  *matCellDef="let row" class="options-button">
-                      <button mat-icon-button color="accent" (click)="editRecord(row.cowTag)">
-                          <mat-icon class="mat-18">system_update</mat-icon>
-                      </button>
-
-                      <button mat-icon-button color="warn" (click)="deleteRecord(row.cowTag)">
-                          <mat-icon class="mat-18">delete</mat-icon>
-                      </button>
+                  <mat-cell  *matCellDef="let row" >                     
+                          <button mat-icon-button color="accent" (click)="editRecord(row.cowTag)">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                          </button>              
+                                            
+                        
+                     
                   </mat-cell>
               </ng-container>
 
 
 
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
               </mat-table>
 
-              <mat-paginator #paginator
-                            [pageIndex]="0"
-                            [pageSize]="5"
-                            [pageSizeOptions]="[5, 10, 25, 100]">
-              </mat-paginator>
+               <mat-paginator #paginator
+                                    [pageIndex]="0"
+                                    [pageSize]="5"
+                                    [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+
           </section>
         </card>
       </div>

@@ -15,16 +15,15 @@ import { BreedingService } from '../../services/breeding.service';
 
 @Component({
   selector: 'app-breeding',
-  templateUrl: './breeding.component.html',
-  styleUrls: ['./breeding.component.css']
+  templateUrl: './breeding.component.html'
+  
 })
 export class BreedingComponent implements OnInit {
-  
+
+  // Declare variables
   maxDate = new Date();
   cattles: Observable<cattle>;
-  isCowSelected = false;
   cattleForm: FormGroup;
-  
   breedingForm: FormGroup;
 
   // For autocomplete
@@ -33,25 +32,17 @@ export class BreedingComponent implements OnInit {
   options: cattle[];
   filteredOptions: Observable<cattle[]>;
 
-  private _filter(value: string): cattle[] {
-    const filterValue = value.toLowerCase();
 
-    return this.options.filter(option => option.cowTag.toLowerCase().indexOf(filterValue) === 0);
-  }
 
 
   constructor(private f: FormBuilder, private cattleService: CattleService, private breedingService: BreedingService,
-              private datePipe: DatePipe, private messagesService: MessagesService ) {
-    
-
-   }
+              private datePipe: DatePipe, private messagesService: MessagesService ) { }
 
 
+  // Initialize parameters here
   ngOnInit() {
     this.createBreedingForm();
-
     this.getCattles();
-
   }
 
 
@@ -60,8 +51,6 @@ export class BreedingComponent implements OnInit {
   getCattles(): void {
     this.cattles = this.cattleService.getAllCattleRecords();
   }
-
-
 
   // Create form control names
   createBreedingForm() {
@@ -80,12 +69,7 @@ export class BreedingComponent implements OnInit {
 
 
 
-  // Show input form when corresponding co is selected
-  proceed(): void {
-    this.isCowSelected = true;
-
-  }
-
+ // Process form inputs
   onSubmit() {
     if (this.breedingForm.invalid) {
       return;
@@ -93,41 +77,48 @@ export class BreedingComponent implements OnInit {
     const formData = this.breedingForm.value;
     formData.date = this.datePipe.transform(this.breedingForm.controls.date.value, "dd-MM-yyyy");
     formData.dueDate = this.datePipe.transform(this.breedingForm.controls.dueDate.value, "dd-MM-yyyy");
-    console.log(JSON.stringify(formData));
 
-    this.breedingService.addBreeding(formData)  
+    // Save
+    this.breedingService.addBreeding(formData)
       .subscribe(
         res => {
           this.success();
+          this.breedingForm.reset();
 
         },
         (err: HttpErrorResponse) => {
-          console.log(err.error);
-          console.log(err.message);
-          this.handleError(err);
+          if(err.status == 500){
+            // this.handleError(err);
+            this.messagesService.openDialog('Server Error', 'Error occured while saving your records. Please try again');
+            return;
+          }
+
+
         }
       );
 
-    this.breedingForm.reset();
     }
 
   }
 
+  // Reset form input fields
   reset(){
     this.breedingForm.reset();
-
   }
 
 
+  // Show on success
   private success() {
-    this.messagesService.openDialog('Success', ' Saved successfully!');
+    this.messagesService.openDialog('Success', ' Your record is saved successly ');
   }
 
+  // Sho on error occurence
   private handleError(error) {
     this.messagesService.openDialog('Error', 'Error saving,Please contact the system administrator.');
   }
 
-  
+
+  // For validation
   public hasError = (controlName: string, errorName: string) => {
     return this.breedingForm.controls[controlName].hasError(errorName);
   }

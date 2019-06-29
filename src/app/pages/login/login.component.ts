@@ -10,23 +10,24 @@ import { LoginDetails } from './auth/login-details';
   templateUrl: './login.component.html',
   styleUrls: [
              './login.component.css'
-                
+
              ]
 })
 export class LoginComponent implements OnInit {
 
         navbar: Boolean = false;
-        loading = false;
+
         form: any = {};
         isLoggedIn = false;
-        isLoginFailed = false; 
-        errorMessage = '';
+        isLoginFailed = false;
         roles: string[] = [];
         private loginInfo: LoginDetails;
-        
+
 
         constructor(private authService: AuthService, private tokenStorage: TokenStorageService,private router: Router) { }
 
+
+        // initialise parameters
           ngOnInit() {
             if (this.tokenStorage.getToken()) {
               this.navbar = true;
@@ -35,14 +36,16 @@ export class LoginComponent implements OnInit {
             }
           }
 
+
+          // Process login
         onSubmit() {
-          this.loading =true;
+
           this.loginInfo = new LoginDetails(
             this.form.username,
             this.form.password);
 
           this.authService.attemptAuth(this.loginInfo).subscribe(
-          
+
             data => {
               this.tokenStorage.saveToken(data.accessToken);
               this.tokenStorage.saveUsername(data.username);
@@ -53,11 +56,10 @@ export class LoginComponent implements OnInit {
               this.isLoggedIn = true;
               this.roles = this.tokenStorage.getAuthorities();
               this.router.navigate(['/dairy/home']);
-          
+
             },
             error => {
               console.log(error);
-              this.errorMessage = error.error.message;
               this.isLoginFailed = true;
             }
           );

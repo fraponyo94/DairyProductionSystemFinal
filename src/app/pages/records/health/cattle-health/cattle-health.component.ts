@@ -42,8 +42,8 @@ export class CattleHealthComponent implements OnInit {
       treatment: [''],
       remarks: [''],
       nameOfveterinaryDoctor: [''],
-      contactofVeterinaryDoctor: [],
-      costOfTreatMent: [],
+      contactofVeterinaryDoctor: ['']
+     
  
     });
   }
@@ -75,9 +75,9 @@ export class CattleHealthComponent implements OnInit {
 
         },
         (err: HttpErrorResponse) => {
-          console.log(err.error);
-          console.log(err.message);
-          this.handleError(err);
+          // console.log(err.error);
+          // console.log(err.message);
+          // this.handleError(err);
         }
       );
 

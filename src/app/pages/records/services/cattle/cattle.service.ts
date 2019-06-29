@@ -3,6 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import {  catchError } from 'rxjs/operators';
 import { cattle, CattleData } from '../../shared/model/models ';
+import * as jsPDF from 'jspdf';
+import 'jspdf-autotable';
+ 
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -15,50 +18,9 @@ export class CattleService {
 
  
   //  Base Url
-  private baseUrl = 'api/cows' ;
+  private baseUrl = 'api/cows' ;  
 
-  // To be shon on User form
-  validationMessages: any;
-
-  // Set up errors object
-  formErrors = {
-    cowTag: '',
-    name: '',
-    dateAcquired: '',
-    breed: {
-      name: '',
-    }
-  };
-
-  // Min/maxlength validation
-  textMin = 3;
-  textMax = 15;
-
-  constructor(private http: HttpClient) {
-    this.validationMessages = {
-      cowTag: {
-        required: `Cow Tag is <strong>required</strong>.`,
-        minlength: `Title must be ${this.textMin} characters or more.`
-
-      },
-      name: {
-        required: `Cattle name is <strong>required</strong>.`,
-        minlength: `Cattle name must be ${this.textMin} characters or more.`,
-        maxlength: `Cattle name must not exceed  ${this.textMin} characters`
-
-
-      },
-       dateAcquired: {
-        required: `dateAcquired is <strong>required</strong>.`,       
-        date: `Acquired date must be a <strong>valid date</strong> should not be <strong>a future date</strong>.`
-      }
-      // name: {
-      //   required: `Start time is <strong>required</strong>.`,
-      //   pattern: `Start time must be a <strong>valid time</strong> in the format <strong>${this.timeFormat}</strong>.`,
-      //   maxlength: `Start time must be ${this.timeMax} characters or less.`
-      // }
-    };
-   }
+  constructor(private http: HttpClient) { }
 
   // Add cattle record
 
@@ -93,6 +55,96 @@ export class CattleService {
     );
   }
 
+  //Design pdf
+  /*define key for identifying column and value to display in PDF table head. (Table head and not page header) */
+public headRows() {
+
+ 
+  return [{
+      id: 'No',
+      cowTag: 'Cattle Tag',
+      name: 'Nick Name',
+      dateAcquired: 'Date Acquired',
+      breed: 'breed',
+      calf: 'No of Calves'
+  }];
+}
+
+
+/* bodyRows returns the pdfData in the form of jsonArray which is then parsed by the autoTable function */
+bodyRows(rowCount, pdfBody) {
+  rowCount = rowCount || 10;
+  let body = [];
+  for (var j = 0; j < rowCount; j++) {
+      body.push({
+          id: j+1,
+          cowTag: pdfBody[j].cowTag,
+          name: pdfBody[j].name,
+          dateAcquired: pdfBody[j].dateAcquired,
+          breed: pdfBody[j].breed.name,
+          calf: pdfBody[j].calf
+      });
+  }
+  return body;
+}
+
+
+// Define custom style/themes here
+ pdfTheme(rowCount,pdfBody) {
+  var doc = new jsPDF();
+  doc.setFontSize(12); 
+  var title ='Total Cattles in the farm: Report generated on '+ new Date();
+  doc.text(title,14, 16); //default
+  doc.autoTable({
+      head: this.headRows(),
+      body: this.bodyRows(rowCount,pdfBody),
+      startY: 20 
+  });
+ 
+  return doc;
+};
+
+
+// toPdf function to print the pdfBody which is an array of jsonobjects holding the table data into pdf.
+ pdf(pdfBody) {
+  const doc = this.pdfTheme(pdfBody.length,pdfBody);
+  const totalPagesExp = '{total_pages_count_string}'; // placeholder for total number of pages 
+  doc.autoTable({
+
+
+      /*whatever you write in didDrawPage comes in every page. Header or footer is determined from startY position in the functions.*/
+      didDrawPage(data) {   
+          // Header
+          doc.setFontSize(12);
+          
+   
+          // Footer
+          const pageSize = doc.internal.pageSize;
+          // jsPDF 1.4+ uses getHeight, <1.4 uses .height
+          const pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+          // jsPDF 1.4+ uses getWidth, <1.4 uses .width
+          const pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+        
+          let str = " Page " + doc.internal.getNumberOfPages()
+          // Total page number plugin only available in jspdf v1.0+
+          if (typeof doc.putTotalPages === 'function') {
+              str = str + " of " + totalPagesExp;
+          }
+          doc.setFontSize(10);
+          doc.text(str, data.settings.margin.left, pageHeight - 10);
+      },
+      margin: {
+          bottom: 60, // this decides how big your footer area will be
+          top: 40 // this decides how big your header area will be.
+      }
+  });
+  // Total page number plugin only available in jspdf v1.0+
+  if (typeof doc.putTotalPages === 'function') {
+      doc.putTotalPages(totalPagesExp);
+  }
+  const fileName = 'cattles.pdf';
+  doc.save(fileName); // this downloads a copy of the pdf in your local instance.
+}
 
 
 

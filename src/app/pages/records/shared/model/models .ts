@@ -4,6 +4,7 @@ class cattle {
         public name: string;
         public dateAcquired: string;
         public breed: breed[];
+        public calf: calf[];
         
   
   }
@@ -28,7 +29,7 @@ class CattleData {
         public cowTag: string;
         public name: string;
         public dateAcquired: string;
-        public breed: string;
+        public breed: breed[];
         public calf: calf[];
    
   } 
@@ -53,25 +54,21 @@ class health {
     treatment: string;
     remarks: string;
     nameOfveterinaryDoctor: string;
-    contactOfVeterinaryDoctor: number;
-    costOfTreatment: number;
+    contactOfVeterinaryDoctor: number;  
     cowhealth: cattle[];
     calf: calf[];
 
 
 }
 
-
-
 class milking {
+    id: number;
     cow: cattle[];
     date: Date;
     firstMilking: number;
     secondMilking: number;
     otherMilking: number;
-    // total: number;
-    unitsSold: number;
-    pricePerUnit: number;
+    remarks: string;
 
 }
 
@@ -80,20 +77,16 @@ class mortality {
     calf: calf[];
     postMortemreport: string;
     findings: string;
-    date: Date;
-   
+    date: Date;   
 
 }
 
-
-class expenses {
-    itemName: string;
-    quantity: number;
-    pricePerUnit: number;
-    remarks: string;
-    date: Date;
-
+enum authorities {
+    employee ='ROLE_EMPLOYEE',
+    Admin ='ROLE_ADMIN'
 }
+
+
 
 
 class Employee {
@@ -118,19 +111,9 @@ class Role{
     name: string;
 }
 
-class milkRecords {
-    date: string;
-    firstMilking: number;
-    secondMilking: number;
-    otherMilking: number;
-    total: number;
-    remarks: string;
-    cow: cattle[];
-
-}
 
 
 
 
 
-export { cattle, CattleData,breed,calf,breeding,health,milking,mortality,expenses,Employee,Account,Role,milkRecords };
+export { cattle, CattleData,breed, authorities, calf,breeding,health,milking,mortality,Employee,Account,Role };

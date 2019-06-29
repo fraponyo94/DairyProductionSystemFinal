@@ -5,20 +5,20 @@ export let MENU_ITEM = [
         title: 'Profile',
         icon: 'user-circle'
     },
-    
-    {
-        path: 'employees',
-        title: 'Employees',
-        icon: 'users'
-    },
+  
+        {
+            path: 'employees',
+            title: 'Employees',
+            icon: 'users'
+        },
      
-    {  path: 'cattle',
-        title: 'Cattle',
+    {   path: 'cattle',
+        title: 'Manage Cattle',
         icon: 'hand-o-right',
         children: [
             {
                 path: 'add/cow',
-                title: 'Add Cow'
+                title: 'Add Cattle'
             },
             {
                 path: 'add/calf',
@@ -26,7 +26,7 @@ export let MENU_ITEM = [
             },
             {
                 path: 'view/records',
-                title: 'Cattles'
+                title: 'Available Cattle/Calf'
             }
         ]
 
@@ -39,11 +39,11 @@ export let MENU_ITEM = [
             children: [
                 {
                     path: 'add-record',
-                    title: 'ADD Record'
+                    title: 'Add Milking Record '
                 },
                 {
                     path: 'view-records',
-                    title: 'View Records'
+                    title: 'Available Milk Records'
                 }
             ]  
         },

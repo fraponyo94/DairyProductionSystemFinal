@@ -7,32 +7,37 @@ import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
+import { cattle } from '../../shared/model/models ';
+import { CattleService } from '../../services/cattle/cattle.service';
 
 
 @Component({
   selector: 'app-calf',
-  templateUrl: './calf.component.html',
-  styleUrls: ['./calf.component.css']
+  templateUrl: './calf.component.html'
+
 })
 export class CalfComponent implements OnInit {
   constructor( private breedService: BreedService, private fb: FormBuilder,
-               private calfService: CalfService,private messagesService: MessagesService, private datePipe: DatePipe) { }
+               private calfService: CalfService,private cattleService: CattleService,
+               
+               private messagesService: MessagesService, private datePipe: DatePipe) { }
   // Date limit
   maxDate = new Date();
 
    // Form Builder
-  private calfForm: FormGroup;
+  calfForm: FormGroup;
+  cattles: Observable<cattle>;
+  
 
 
   //  Breed Autocomplete
  // breeds: breed[] = this.breedService.breeds;
   breeds: string[] = this.breedService.breeds;
   options: string[] = this.breedService.breeds;
-
   filteredOptions: Observable<string[]>;
 
-
-
+  // Check whether breeding history exists
+  breeding: boolean = false;
 
   // Sex options
   calfSex = [
@@ -46,24 +51,24 @@ export class CalfComponent implements OnInit {
               }];
 
 
+  // To facilitate autocomplete functionanlity
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.breeds.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
 
 
+  // Initialise paraemeters
   ngOnInit() {
     this.createCalfForm();
+    this.getCattles()
   }
-
-
-
 
   // Create calf addition form
   private createCalfForm() {
 
     this.calfForm = this.fb.group({
-      calfId: ['',Validators.required,Validators.minLength(4)],
+      calfId: ['',Validators.compose([Validators.required,Validators.minLength(4)])],
       dateOfCalving: [new Date()],
       sex: ['',Validators.required],
       breed: this.fb.group({
@@ -80,7 +85,6 @@ export class CalfComponent implements OnInit {
     this.filteredOptions = this.calfForm.controls.breed.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
-
     );
 
 
@@ -88,13 +92,12 @@ export class CalfComponent implements OnInit {
 
 
   // Process onsubmit
-
    //  Processes form data
    onSubmit() {
 
     if (this.calfForm.invalid) {
            return;
-    } else {
+    } else { 
      const formData = this.calfForm.value;
      formData.dateOfCalving = this.datePipe.transform(this.calfForm.controls.dateOfCalving.value, "dd-MM-yyyy");
      console.log(JSON.stringify(formData));
@@ -108,7 +111,7 @@ export class CalfComponent implements OnInit {
          (err: HttpErrorResponse) => {
            console.log(err.error);
            console.log(err.message);
-           this.handleError(err);
+           //this.handleError(err);
          }
        );
 
@@ -124,6 +127,12 @@ export class CalfComponent implements OnInit {
 
   }
 
+    
+  // get cattles available for autocomplete functionality
+  getCattles(): void {
+    this.cattles = this.cattleService.getAllCattleRecords();
+  
+  }
 
   // Reset  form
   reset() {
@@ -136,10 +145,11 @@ export class CalfComponent implements OnInit {
  }
 
  private handleError(error) {
-   this.messagesService.openDialog('Error', 'Error saving,Please contact the system administrator.');
+   this.messagesService.openDialog('Sever error', 'Error occured while saving your data.Please try again');
  }
 
  
+ //  Returns form errors 
  public hasError = (controlName: string, errorName: string) => {
   return this.calfForm.controls[controlName].hasError(errorName);
 }

@@ -10,6 +10,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { MaterialModule } from './material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { PdfServiceService } from '../pages/records/services/pdf-service.service';
 
 @NgModule({
   imports: [
@@ -25,6 +26,9 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
     CardComponent,
   
     ProfileComponent
+  ],
+  providers: [
+    PdfServiceService
   ],
   exports: [
     CardComponent,      

@@ -36,7 +36,7 @@ export class MilkingComponent implements OnInit {
         }),
 
       date: [new Date(),Validators.required],
-      firstMilking: ['',Validators.required,Validators.min(0)],
+      firstMilking: ['',Validators.required],
       secondMilking: ['',Validators.min(0)],
       otherMilking: ['',Validators.min(0)],
       remarks: ['']

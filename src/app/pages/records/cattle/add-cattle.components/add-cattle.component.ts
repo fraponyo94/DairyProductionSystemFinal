@@ -14,12 +14,11 @@ import { BreedService } from '../../services/breed/breed.service';
 
 @Component({
   selector: 'app-add-cattle',
-  templateUrl: './add-cattle.component.html',
-  styleUrls: ['./add-cattle.component.css']
+  templateUrl: './add-cattle.component.html'
+
 })
 export class AddCattleComponent implements OnInit {
   addCattleForm: FormGroup;
-  isPurchased = false;
   submitted = false;
   maxDate = new Date();
 
@@ -40,6 +39,8 @@ export class AddCattleComponent implements OnInit {
                 private messagesService: MessagesService, private breedService: BreedService, private datePipe: DatePipe  ) { }
 
 
+
+  // Initialise parameters
   ngOnInit() {   
     this.createForm();
 
@@ -48,10 +49,10 @@ export class AddCattleComponent implements OnInit {
   }
 
 
+  // Form parameters
   private createForm() {
-
     this.addCattleForm = this.fb.group({
-      cowTag: ['', Validators.required],
+      cowTag: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       name: ['', Validators.required],
       breed: this.fb.group({
        name: ['']
@@ -69,7 +70,7 @@ export class AddCattleComponent implements OnInit {
 
   }
 
-
+ // Validation
   public hasError = (controlName: string, errorName: string) => {
     return this.addCattleForm.controls[controlName].hasError(errorName);
   }
@@ -82,19 +83,22 @@ export class AddCattleComponent implements OnInit {
             return;
      } else {
       const formData = this.addCattleForm.value;
-      formData.dateAcquired = this.datePipe.transform(this.addCattleForm.controls.dateAcquired.value, "MM-yyyy");
+      formData.dateAcquired = this.datePipe.transform(this.addCattleForm.controls.dateAcquired.value, "dd-MM-yyyy");
       console.log(JSON.stringify(formData));
 
       this.cattleService.addCattle(formData)
         .subscribe(
           res => {
-            this.success();
+            this.messagesService.openDialog('Success', 'Cattle '+' addded successfully!');
             this.addCattleForm.reset();
           },
           (err: HttpErrorResponse) => {
-            console.log(err.error);
-            console.log(err.message);
-            this.handleError(err);
+            if(err.status === 500){
+              this.messagesService.openDialog('Server Error', 'Error occurred while processing your request.');
+              return;
+            }
+           
+            //this.handleError(err);
           }
         );
 
@@ -102,10 +106,6 @@ export class AddCattleComponent implements OnInit {
      }
    }
 
-
-   purchased() {
-     this.isPurchased = true;
-   }
 
    // Get available breed records
    getBreeds() {
@@ -118,15 +118,6 @@ export class AddCattleComponent implements OnInit {
    // Reset  form
    reset() {
     this.addCattleForm.reset();
-  }
-
-
-  private success() {
-    this.messagesService.openDialog('Success', ' Saved successfully!');
-  }
-
-  private handleError(error) {
-    this.messagesService.openDialog('Error', 'Error saving,Please contact the system administrator.');
   }
 
 

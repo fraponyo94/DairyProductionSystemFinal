@@ -1,0 +1,53 @@
+<div flex="60%">
+    <form [formGroup]="addCattleForm"  (ngSubmit)="update()"  autocomplete="off"  class="my-3 border  p-3 ml-auto mr-auto" fxFlex="80%" fxFlex.xs="100%" >  
+                        
+        <diV class="input-row">
+           <mat-form-field fxFlex  class="w-100 m-auto" appearance="outline" >
+               <mat-label>Cow Tag Number</mat-label>
+               <input matInput  class="inputField" type="text" id="cowTag"
+                   formControlName="cowTag"  placeholder="e.g T001" disabled />                                  
+                                             
+             </mat-form-field> 
+        </diV>
+
+         <div class="input-row">
+             <mat-form-field fxFlex  class="w-100 m-auto" appearance="outline" >                    
+                 <mat-label>Cow Name</mat-label>
+                 <input matInput class="inputField" type="text" id="name"
+                       formControlName="name"   placeholder="e.g Lando" />                       
+                       <!-- <mat-error *ngIf="addCattleForm.controls.name.errors.required">Cow name is required</mat-error>                                            -->
+             
+             </mat-form-field> 
+         </div>
+
+         <div class="input-row">
+             <mat-form-field fxFlex  class="w-100 m-auto"  appearance="outline" formGroupName="breed" >
+                 <mat-label>Select Breed</mat-label> 
+                 <input type="text" placeholder="Select breed" aria-label="Number" matInput  formControlName="name"  [matAutocomplete]="auto">
+                 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                   <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                     {{option}}
+                   </mat-option>
+                 </mat-autocomplete>
+             </mat-form-field>
+         </div>
+
+         <div class="input-row">
+             <mat-form-field fxFlex  class="w-100 m-auto"  appearance="outline" >
+                 <mat-label>Date Acquired</mat-label>
+                 <input matInput [matDatepicker]="picker"  [max]="maxDate" placeholder="Date acquired" formControlName="dateAcquired" id="dateAcquired"
+                   readonly (click)="picker.open()">
+                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                 <mat-datepicker #picker disabled="false"></mat-datepicker>     
+             </mat-form-field>
+         </div>
+
+         <!-- Submit Button -->
+         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="50px">
+             <button mat-raised-button color="primary"   [disabled]="!addCattleForm.valid">Update Cattle</button>
+             <button mat-raised-button color="primary"  (click)="addCattleForm.reset()">Cancel</button>
+            
+             </div>
+         </form>        
+   
+</div>

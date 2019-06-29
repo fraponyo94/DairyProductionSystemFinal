@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-md-12">
+        <card cardTitle="Manage Animal Death/Mortality History" >
+            <mat-tab-group  (selectedTabChange)="executeSelectedChange($event)">
+                <mat-tab label="Add Mortality/Death Occurrence"> 
+                    <app-mortality></app-mortality>
+                </mat-tab>
+                <mat-tab label="Available Mortality Records">
+                    <app-mortality-history></app-mortality-history>
+                </mat-tab>                           
+               
+            </mat-tab-group>
+        </card>
+    </div>
+ </div>

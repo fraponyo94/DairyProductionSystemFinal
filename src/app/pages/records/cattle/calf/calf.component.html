@@ -1,8 +1,13 @@
 
+
 <div class="row">
   <div class="col-md-12">
           <card cardTitle="Add Calf Details" >
-                  <form [formGroup]="calfForm"  (ngSubmit)="onSubmit()"  autocomplete="off"  class="my-3 border  p-3 ml-auto mr-auto" fxFlex="70%" fxFlex.xs="100%"  > 
+                     <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="!(cattles | async)?.length > 0" >       
+                        <p>No cow records  found,ensure the records are added to the system before proceeding</p>  
+                    </div>
+
+                  <form [formGroup]="calfForm"  (ngSubmit)="onSubmit()"  autocomplete="off"  class="my-3 border  p-3 ml-auto mr-auto" fxFlex="70%" fxFlex.xs="100%" *ngIf="(cattles | async)?.length > 0" > 
                       
 
                       <div class="input-row" fxLayout="row" fxLayout.lt-md="column"  fxLayoutGap.lt-md="0px"> 
@@ -46,7 +51,7 @@
                                         {{option.value}}
                                         </mat-option>                            
                                     </mat-select >                           
-                                <mat-error *ngIf="hasError('sex', 'required')">Please provide cow tag number</mat-error>   
+                                <mat-error *ngIf="hasError('sex', 'required')">Please select sex</mat-error>   
                                 
                                 
                                 </mat-form-field> 
@@ -74,8 +79,8 @@
           
                       <!-- Submit Button -->
                       <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="50px">
-                          <button class="btn btn-primary" [disabled]="!calfForm.valid">ADD</button>
-                          <button class="btn btn-primary" (click)="reset()">Cancel</button>
+                          <button mat-raised-button color="primary"  [disabled]="!calfForm.valid">ADD Calf</button>
+                          <button mat-raised-button color="primary" (click)="reset()">Cancel</button>
                           
                           </div>
                       </form>         

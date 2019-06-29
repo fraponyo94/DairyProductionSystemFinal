@@ -1,5 +1,9 @@
 
-<form [formGroup]="breedingForm"  (ngSubmit)="onSubmit()"  autocomplete="off"  class="my-3 border  p-3 ml-auto mr-auto" fxFlex="80%" fxFlex.xs="100%"  >                         
+    <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="!(cattles | async)?.length > 0" >       
+        <p>No cow records  found,ensure the records are added to the system before proceeding</p>  
+    </div>
+ <!-- Only show if cattle object is present -->
+<form [formGroup]="breedingForm"  (ngSubmit)="onSubmit()"  autocomplete="off"  class="my-3 border  p-3 ml-auto mr-auto" fxFlex="80%" fxFlex.xs="100%" *ngIf="(cattles | async)?.length > 0" >                         
 
     <div class="input-row" fxLayout="row" fxLayout.lt-md="column"  fxLayoutGap.lt-md="0px"> 
         <mat-form-field fxFlex  appearance="outline" formGroupName="cow"  class="m-auto pr-1" >
@@ -27,7 +31,7 @@
             <mat-form-field fxFlex  class="m-auto pr-1" appearance="outline" >                             
                 <mat-label>Due date</mat-label>
                 <input matInput [matDatepicker]="picker1" placeholder="Due Date" formControlName="dueDate" id="dueDate"
-                readonly (click)="picker1.open()">
+                readonly (click)="picker1.open()" [min]="maxDate">
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field> 
@@ -67,8 +71,8 @@
     
     <!-- Submit Button -->
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="50px">
-        <button class="btn btn-primary" [disabled]="!breedingForm.valid">ADD</button>
-        <button class="btn btn-primary" (click)="reset()">Cancel</button>
+        <button mat-raised-button color="primary"  [disabled]="!breedingForm.valid">ADD Breeding</button>
+        <button mat-raised-button color="primary"  (click)="reset()">Cancel</button>
         
         </div>
     </form>         

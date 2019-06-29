@@ -1,4 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
 .full-width-dialog .mat-dialog-container {
     min-width: 40vw;
     max-width: 50vw !important;

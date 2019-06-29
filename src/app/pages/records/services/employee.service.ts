@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { Employee } from '../shared/model/models ';
+import { map } from 'rxjs/operators';
 
 
 
@@ -17,6 +18,12 @@ export class EmployeeService {
 
   private baseUrl = 'api/employees' ;
 
+  // Temporarily stores data from dialogs
+  dialogData: any;
+
+  // 
+  dataChange: BehaviorSubject<Employee[]> = new BehaviorSubject<Employee[]>([]);
+
   constructor(private http: HttpClient) { }
 
   // Get employee by Id
@@ -27,6 +34,7 @@ export class EmployeeService {
 
   // Save employee
   createEmployee(employee: Object): Observable<Object> {
+    this.dialogData = employee;
     return this.http.post(`${this.baseUrl}`, employee);
   }
 
@@ -53,23 +61,21 @@ export class EmployeeService {
     );
   }
 
-  // --------- INCREMENTAL SEARCH --------
 
-  //  Called by the Mat Datatable search by last name.
-
-  public nameSearch(terms) {
-    return terms.pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap(term => {
-          const url = `api/members/?last_name=${term}`;
-          return this.http.get(url);
-      }),
+  // Find by email
+  getEmployeesByEmail(email: string): Observable<any>{
+    const url = 'api/employees/user';
+    return this.http.get<Employee>(`${url}/${email}`).pipe(
       catchError((error: any) => {
            console.error(error);
            return of();
-      }),
+         }),
     );
   }
+ 
+
+  
+
+
 
 }

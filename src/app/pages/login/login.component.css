@@ -198,15 +198,6 @@ button:hover {
     text-align: center;
   }
  
-  a:hover {
-    text-decoration: none;
-  color: #6a7dfe;
-  color: -webkit-linear-gradient(left, #21d4fd, #b721ff);
-  color: -o-linear-gradient(left, #21d4fd, #b721ff);
-  color: -moz-linear-gradient(left, #21d4fd, #b721ff);
-  color: linear-gradient(leftt, #21d4fd, #b721ff);
-}
-
  /*------------------------------------------------------------------
   [ Responsive ]*/
   

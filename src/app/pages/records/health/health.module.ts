@@ -10,9 +10,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { CalfHealthComponent } from './calf-health/calf-health.component';
+import { HealthListComponent } from './health-list/health-list.component';
 
 @NgModule({
-  declarations: [HealthComponent,CattleHealthComponent,CalfHealthComponent],
+  declarations: [HealthComponent,CattleHealthComponent,CalfHealthComponent, HealthListComponent],
   imports: [
     CommonModule,
     routing,

@@ -1,110 +1,84 @@
  <div class="row">
       <div class="col-md-12">
         <!--  -->
-        <card cardTitle="Milking Records">
+        <card cardTitle="Available Milking Records">
 
           <section class="searchSection" >
-              <p>No records available</p>
-             
-              <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="milkDataSource?.length">       
-
-                  <mat-form-field color="warn" appearance="outline">
-                      <mat-select placeholder="Filter By">
-                        <mat-option *ngFor="let selected of filter"  (click)="selectChangeHandler(selected.value)" [value]="selected.value">
-                          {{ selected.value }}
-                        </mat-option>
-                      </mat-select>
-                  </mat-form-field>  
-
-                  <div class="col"  *ngIf="isCowSelected" >
-                      <!-- Query by Cow Tag -->
-                    <mat-form-field id="searchField" color="warn" appearance="outline">                    
-                        <input matInput (keyup)="searchTerm$.next($event.target.value)" placeholder="e.g T001">
-                          <mat-hint align="center">Search by Cow Tag</mat-hint>
-                      </mat-form-field>
-                  </div>
-
-                  <div class="col" *ngIf="isDateSelected" >
-                    <!-- Filter by date -->
-                      <form class="date-block" [formGroup]="dateFilterForm" >
-                          <div class="date-block__list">
-                            <mat-form-field>
-                              <input matInput 
-                                [matDatepicker]="fromDate" 
-                                placeholder="From Date" 
-                                formControlName="fromDate">
-                              <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
-                              <mat-datepicker #fromDate></mat-datepicker>
-                            </mat-form-field>
-                          </div>
-                            <div class="date-block__list">
-                            <mat-form-field>
-                              <input matInput 
-                                [matDatepicker]="toDate" 
-                                placeholder="To Date" 
-                                formControlName="toDate">
-                              <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
-                              <mat-datepicker #toDate></mat-datepicker>
-                            </mat-form-field>
-                          </div>
-            
-                          <div>
-                            <button mat-raised-button color="accent"  (click)="applyFilter()">Filter</button>
-                          </div>
-                        </form>
-                  </div>
+              <p *ngIf="!milkDataSource.data.length > 0">No records available</p>           
+                   
+                <section class="searchSection" >
+                
+                  <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="milkDataSource.data.length > 0">      
+    
+                      <mat-form-field fxFlex="20%">
+                          <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+                      </mat-form-field> 
                       
-            </div>
+                      <span>
+                        Export to pdf:
+                       <a (click)="downloadReport()" target="_blank">
+                          <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                       </a>
+                      
+                    </span>
+                </div>
+  
+              </section> <!-- End search section -->
+    
+                 
           </section> <!-- End search section -->
 
 
-          <section class='tableSection' >
+          <section class='tableSection' [hidden]='isLoading' *ngIf="milkDataSource.data.length > 0">
 
-
-              <mat-table class="matTable" [dataSource]="milkDataSource" *ngIf="milkDataSource?.length">
+              <mat-table class="matTable" [dataSource]="milkDataSource" matSort class="mat-cell" >
       
                   <ng-container matColumnDef="No">
                       <mat-header-cell *matHeaderCellDef> No </mat-header-cell>
-                      <mat-cell *matCellDef="let row; let i = dataIndex;">{{i}}</mat-cell>         
+                      <mat-cell *matCellDef="let row; let i = index;">{{i+1}}</mat-cell>         
                   </ng-container>
               
                   <ng-container matColumnDef="Date">
-                    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.date}} </mat-cell>
                   </ng-container>
               
               
                   <ng-container matColumnDef="cow">
-                    <mat-header-cell *matHeaderCellDef>Cow Tag </mat-header-cell>
-                    <mat-cell  *matCellDef="let row"> {{row.cow[0].cowTag}} </mat-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Cow Tag </mat-header-cell>
+                    <mat-cell  *matCellDef="let row"> {{row.cow.cowTag}} </mat-cell>
                   </ng-container>  
               
-                    <ng-container matColumnDef="milk">
-                        <mat-header-cell *matHeaderCellDef> Milk Production( Litres )</mat-header-cell>
-                        <mat-cell *matCellDef="let row">  {{row.total}} </mat-cell> 
+                    <ng-container matColumnDef="first">
+                        <mat-header-cell *matHeaderCellDef> First Milking( Litres )</mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.firstMilking}} </mat-cell> 
                     </ng-container>
                     
-                    <ng-container matColumnDef="details">
-                        <mat-header-cell *matHeaderCellDef> Details </mat-header-cell>
-                        <mat-cell *matCellDef="let row">  {{row.total}} </mat-cell> 
-                    </ng-container>   
+                    <ng-container matColumnDef="second">
+                        <mat-header-cell *matHeaderCellDef> Second Milking( Litres )</mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.secondMilking}} </mat-cell> 
+                    </ng-container>
+
+                    <ng-container matColumnDef="other">
+                        <mat-header-cell *matHeaderCellDef> Final Milking( Litres )</mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.otherMilking}} </mat-cell> 
+                    </ng-container>
                     
-                    <!-- <ng-container matColumnDef="options">
-                        <mat-header-cell *matHeaderCellDef >options</mat-header-cell>
-                        <mat-cell  *matCellDef="let row" class="options-button">
-                            <button mat-icon-button color="accent" (click)="editRecord(row.cowTag)">
-                                <mat-icon class="mat-18">system_update</mat-icon>
+                    <ng-container matColumnDef="remarks">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Remarks </mat-header-cell>
+                        <mat-cell *matCellDef="let row">  {{row.remarks}} </mat-cell> 
+                    </ng-container>  
+
+                    <ng-container matColumnDef="option">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+                        <mat-cell *matCellDef="let row; let i=index;">
+                            <button mat-icon-button color="accent" (click)="editRecord(row.id)">
+                              <mat-icon aria-label="Edit">edit</mat-icon>
                             </button>
-      
-                            <button mat-icon-button color="warn" (click)="deleteRecord(row.cowTag)">
-                                <mat-icon class="mat-18">delete</mat-icon>
-                            </button>
-                        </mat-cell>
-                    </ng-container> -->
+                            </mat-cell>
+                    </ng-container>
                     
-              
-              
-              
+                    
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>          
           </mat-table>

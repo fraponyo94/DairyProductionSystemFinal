@@ -9,12 +9,15 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { ReactiveFormsModule } from '@angular/forms';
 import { routing } from './milking-routing.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import { UpdateMilkingRecordsComponent } from './update-milking-records/update-milking-records.component';
+import { UpdateDatatableService } from '../services/services/update-datatable.service';
 
 @NgModule({
   declarations: [ 
     MilkingComponent,
     MilkRecordsComponent,
-    MilkComponent],
+    MilkComponent,
+    UpdateMilkingRecordsComponent],
 
   imports: [
     CommonModule, 
@@ -24,6 +27,11 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     ReactiveFormsModule,   
     FlexLayoutModule,
     MDBBootstrapModule.forRoot() 
-  ]
+  ],
+  providers: [UpdateDatatableService],
+  
+  entryComponents: [
+    UpdateMilkingRecordsComponent
+  ],
 })
 export class MilkingModule { }

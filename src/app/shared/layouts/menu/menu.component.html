@@ -1,4 +1,4 @@
-<ul class="menu-wrap animated fadeIn" *ngIf="router.url != '/dairy/login'">
+<ul class="menu-wrap animated fadeIn" *ngIf="router.url != '/dairy/login**'">
   <li *ngFor="let item of menuInfo;let i = index" class="menu-item" [ngClass]="{'item-toggle-on':item.toggle === 'on'}">
     <a [routerLink]="[item.routerLink.join('/')]" *ngIf="item.routerLink" routerLinkActive="active" class="menu-link" (click)="_selectItem(item)">
       <div class="placeholder">

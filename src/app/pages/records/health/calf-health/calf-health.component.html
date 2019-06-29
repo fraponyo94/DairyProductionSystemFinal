@@ -1,7 +1,11 @@
 <div class="row">
 <div class="col-md-12">
-        <card cardTitle="Add Cattle Health Record" >
-                <form [formGroup]="calfHealthForm"  (ngSubmit)="onSubmit()"  autocomplete="off"  class="my-3 border  p-3  ml-auto mr-auto" fxFlex="80%" fxFlex.xs="100%"  >                         
+        <card cardTitle="Add Calf Medication Record" >
+                <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="!(calfs | async)?.length > 0" >       
+                        <p>No calf records  found,ensure the records are added to the system before proceeding</p>  
+                    </div>
+                    
+                <form [formGroup]="calfHealthForm"  (ngSubmit)="onSubmit()"  autocomplete="off"  class="my-3 border  p-3  ml-auto mr-auto" fxFlex="80%" fxFlex.xs="100%" *ngIf="(calfs | async)?.length > 0" >                         
 
                     <div class="input-row" fxLayout="row" fxLayout.lt-md="column"  fxLayoutGap.lt-md="0px"> 
                         <mat-form-field fxFlex  appearance="outline" formGroupName="calf"  class="m-auto pr-1" >
@@ -55,20 +59,20 @@
                             </mat-form-field>
                         
                             <mat-form-field fxFlex class="w-100 m-auto"  appearance="outline" class="m-auto pl-1">
-                                <mat-label>Contact of veterinary Doctor</mat-label>
-                                <input matInput   class="inputField" type="text" id="contactofVeterinaryDoctor"
-                                    formControlName="contactofVeterinaryDoctor"  placeholder="Enter contact of Veterinary Doctor"  />  
+                                <mat-label>Name of the Veterinary Doctor</mat-label>
+                                <input matInput   class="inputField" type="text" id="nameOfveterinaryDoctorr"
+                                    formControlName="nameOfveterinaryDoctor"  placeholder="Enter name of Veterinary Doctor"  />  
                             </mat-form-field>
-                       
+                        
                       </div>
 
                       
                     <div class="input-row" fxLayout="row" fxLayout.lt-md="column"  fxLayoutGap.lt-md="0px">
-                        
+                       
                             <mat-form-field fxFlex class="w-100 m-auto"  appearance="outline" class="m-auto pr-1">
-                                <mat-label>Cost of Medication in Ksh</mat-label>
-                                <input matInput   class="inputField" type="number" id="costOfTreatMent"
-                                    formControlName="costOfTreatMent"  placeholder="0.00"  />                                      
+                                <mat-label>Contact of veterinary Doctor</mat-label>
+                                <input matInput   class="inputField" type="number" id="contactofVeterinaryDoctor"
+                                    formControlName="contactofVeterinaryDoctor"  placeholder="Enter email/phone number"  />                                      
                                   
                             </mat-form-field>
                  
@@ -84,8 +88,8 @@
                     
                     <!-- Submit Button -->
                     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="50px">
-                        <button class="btn btn-primary" [disabled]="!calfHealthForm.valid">ADD</button>
-                        <button class="btn btn-primary" (click)="reset()">Cancel</button>
+                        <button mat-raised-button color="primary" [disabled]="!calfHealthForm.valid">ADD Medication Record</button>
+                        <button mat-raised-button color="primary" (click)="reset()">Cancel</button>
                         
                         </div>
                     </form>         

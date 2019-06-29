@@ -15,8 +15,9 @@ import { UpdateDatatableService } from '../services/services/update-datatable.se
 import { EmployeeService } from '../services/employee.service';
 import { ConfirmService } from '../services/services/confirm-dialog/confirm.service';
 import { MessagesService } from '../services/services/messages-service/messages.service';
-import { FormErrorsService } from '../services/services/form-validation/form-errors.service';
+
 import { ConfirmComponent } from '../services/services/confirm-dialog/confirm.component';
+
 
 @NgModule({
   declarations: [ 
@@ -24,7 +25,8 @@ import { ConfirmComponent } from '../services/services/confirm-dialog/confirm.co
     EditEmployeeComponent,
     AddEditFormComponent,
     ConfirmComponent,
-    AddEmployeeComponent],
+    AddEmployeeComponent,
+   ],
   imports: [
     CommonModule,
     routing,
@@ -39,11 +41,10 @@ import { ConfirmComponent } from '../services/services/confirm-dialog/confirm.co
     EmployeeService,
     ConfirmService,
     MessagesService,
-    FormErrorsService,
+   
   ],
   entryComponents: [
-    ConfirmComponent,
-   
+    ConfirmComponent,  
     EditEmployeeComponent,
     AddEmployeeComponent
   ],

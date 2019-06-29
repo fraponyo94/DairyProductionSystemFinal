@@ -1,72 +1,87 @@
 
 <div class="row">
     <div class="col-md-12">
-            <card cardTitle="Employee Records">                  
+            <card cardTitle="Manage Employees">                  
 
                     <div fxLayout="row" fxLayoutAlign="space-around center">
 
-                      <span *ngIf="dataSource?.length">
-                          <button class='button' mat-raised-button (click)="getAllRecords()">
-                            Get all Employees</button>
-
-                          <button mat-raised-button (click)="getAllSelected()">Show Selected</button>
+                       <span>
+                           Reload Employee data:
+                          <button mat-icon-button (click)="getAllRecords()">
+                            <mat-icon>refresh</mat-icon>
+                          </button>
+                         
                        </span>
                       
-                        <button mat-raised-button (click)="addRecord()" mat-raised-button color="primary"  >Add</button>
+                        <button mat-raised-button (click)="addRecord()" mat-raised-button color="primary"  >Add Employee</button>
                     </div>
 
                     
                   <section class="searchSection" >
-                      <p>No records available</p>
+                      <p *ngIf="!dataSource.data.length > 0" > No records available</p>
                      
                       <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="dataSource.data.length > 0">       
 
-                        <!-- Name query. -->
-                              <mat-form-field id="searchField">
-                                <input matInput (keyup)="searchTerm$.next($event.target.value)" placeholder="Search by name">
-                                  <mat-hint align="center">Enter Employee name </mat-hint>
-                              </mat-form-field>
+                        <!-- Search by any field -->
+                          <mat-form-field fxFlex="20%">
+                            <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+                            <mat-hint align="center">Search by any Field </mat-hint>
+                          </mat-form-field>
                     </div>
                   </section> <!-- End search section -->
 
 
-                  <section class='tableSection' *ngIf="dataSource.data.length > 0" >
+                  <section class='tableSection' *ngIf="dataSource.data.length > 0"  >
                     
-                      <mat-table class="matTable" [dataSource]="dataSource">
+                      <mat-table #table class="matTable" [dataSource]="dataSource" matSort class="mat-cell">
 
                       <ng-container matColumnDef="select">
-                          <mat-header-cell *matHeaderCellDef> Select </mat-header-cell>
-                          <mat-cell *matCellDef="let row">
-                              <mat-checkbox (click)="selectMember(row.employeeId)"></mat-checkbox>
+                          <mat-header-cell *matHeaderCellDef > No </mat-header-cell>
+                          <mat-cell *matCellDef="let row; let i=index;">{{i+1}}
+                              <!-- <mat-checkbox (click)="selectMember(row.employeeId)"></mat-checkbox> -->
                           </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="employeeId">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header > ID Number </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.employeeId}} </mat-cell>
                       </ng-container>
                   
                       <ng-container matColumnDef="name">
-                        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header > Name </mat-header-cell>
                         <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
                       </ng-container>
 
 
                       <ng-container matColumnDef="email">
-                        <mat-header-cell *matHeaderCellDef>Email Address  </mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Email Address  </mat-header-cell>
                         <mat-cell  *matCellDef="let row">  {{row.email}} </mat-cell>
                       </ng-container>
 
 
                         <ng-container matColumnDef="phone">
-                            <mat-header-cell *matHeaderCellDef> Phone Number</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Phone Number</mat-header-cell>
                             <mat-cell *matCellDef="let row">  {{row.phoneNumber}} </mat-cell>
-                        </ng-container>
-
-                       
+                        </ng-container>                       
 
                         <ng-container matColumnDef="options">
-                            <mat-header-cell *matHeaderCellDef> Options </mat-header-cell>
-                            <mat-cell *matCellDef="let row" class="options-button">
-                                <button mat-raised-button color="accent" (click)="editRecord(row.employeeId)">Edit</button>
-                                <button mat-raised-button color="warn" (click)="deleteRecord(row.employeeId)">Delete</button>              
-                            
-                            </mat-cell>
+
+                            <mat-header-cell *matHeaderCellDef>
+                                <button mat-icon-button color="primary" (click)="addEmployee()">
+                                  <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+                                </button>
+                              </mat-header-cell>
+                         
+                              <mat-cell *matCellDef="let row; let i=index;">
+                                <button mat-icon-button color="accent" (click)="editRecord(row.employeeId)">
+                                  <mat-icon aria-label="Edit">edit</mat-icon>
+                                </button>
+                        
+                                <button mat-icon-button color="accent" (click)="deleteRecord(row.employeeId)">
+                                  <mat-icon aria-label="Delete">Drop</mat-icon>
+                                </button>
+                              </mat-cell>
+
                           </ng-container>
 
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

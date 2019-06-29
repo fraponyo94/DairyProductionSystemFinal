@@ -13,17 +13,21 @@
                   <input matInput #employeeId maxlength="60" class="inputField" type="text" id="name"
                       formControlName="name" [errorStateMatcher]="matcher" required placeholder="Employee Name">
                   <mat-hint align="end">{{name?.value.length || 0}}/60</mat-hint>
-                  <!-- <mat-error>{{ errors.required }}</mat-error> -->
+                  <mat-error *ngIf="f.name.errors?.required">Employee name is required</mat-error>
                 </mat-form-field>
-             </span>
+             </span> 
 
              <span>
                 <mat-form-field appearance="outline" >
                     <mat-label>ID Number</mat-label>
                     <input matInput #employeeId maxlength="12" class="inputField" type="number" id="employeeId"
-                          formControlName="employeeId" [errorStateMatcher]="matcher" required placeholder="ID Number">
-                    <mat-hint align="end">{{employeeId?.value?.length || 0}}/12</mat-hint>
-                    <!-- <mat-error>{{ errors.required }}</mat-error> -->
+                          formControlName="employeeId" [errorStateMatcher]="matcher" required placeholder="e.g 30000337" [min]=0 >
+                    <mat-hint align="end">{{employeeId?.value?.length || 0}}/9</mat-hint>                
+                   <mat-error *ngIf="f.employeeId.invalid && f.employeeId.touched">
+                      <mat-error *ngIf="f.employeeId.errors.required">A valid ID number is required</mat-error>                    
+                      <mat-error *ngIf="f.employeeId.errors.minlength">ID number should be atleast 6 digits</mat-error>                    
+                      <mat-error *ngIf="f.employeeId.errors.maxlength">Employee ID number should be atmost 10 digits</mat-error>
+                  </mat-error>
                 </mat-form-field>
              </span>
 
@@ -31,9 +35,12 @@
                 <mat-form-field appearance="outline" >
                     <mat-label>Email Address</mat-label>
                     <input matInput #email maxlength="60" class="inputField" type="email" id="email"
-                            formControlName="email" [errorStateMatcher]="matcher" required placeholder="Email Address">
+                            formControlName="email" [errorStateMatcher]="matcher" required placeholder="e.g email@example.com">
                       <mat-hint align="end">{{email?.value.length || 0}}/60</mat-hint> 
-                    <!-- <mat-error>{{ errors.required }}</mat-error> -->
+                    <mat-error *ngIf="f.email.invalid && f.email.touched">
+                      <mat-error *ngIf="f.email.errors.required">A valid email is required</mat-error>
+                      <mat-error *ngIf="f.email.errors.email">A valid email is required</mat-error>
+                    </mat-error>
                   </mat-form-field>
              </span>
 
@@ -41,9 +48,13 @@
                 <mat-form-field appearance="outline" >
                     <mat-label>Phone Number</mat-label>
                     <input matInput #email maxlength="12" class="inputField" type="number" id="phoneNumber"
-                            formControlName="phoneNumber" [errorStateMatcher]="matcher" required placeholder="Phone Number">
+                            formControlName="phoneNumber" [errorStateMatcher]="matcher" required placeholder="e.g 0700000000 /+254700000000" [min]=0>
                     <mat-hint align="end">{{phoneNumber?.value.length || 0}}/12</mat-hint> 
-                    <!-- <mat-error>{{ errors.required }}</mat-error> -->
+                      <mat-error *ngIf="f.phoneNumber.invalid && f.phoneNumber.touched">
+                      <mat-error *ngIf="f.phoneNumber.errors.required">A valid phone number is required</mat-error>
+                      <mat-error *ngIf="f.phoneNumber.errors.minlength">Phone number should be atleast 9 digits</mat-error>
+                      <mat-error *ngIf="f.phoneNumber.errors.maxlength">Phone number should be atmost 12 digits</mat-error>  
+                  </mat-error>
                   </mat-form-field>
              </span>
              <span>

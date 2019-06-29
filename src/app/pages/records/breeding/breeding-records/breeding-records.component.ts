@@ -1,46 +1,48 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit,  ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
 import { breeding } from '../../shared/model/models ';
 import { BreedingService } from '../../services/breeding.service';
+import { PdfServiceService } from '../../services/pdf-service.service';
+
+
+
 
 @Component({
   selector: 'app-breeding-records',
-  templateUrl: './breeding-records.component.html',
-  styleUrls: ['./breeding-records.component.css']
+  templateUrl: './breeding-records.component.html'
+ 
 })
-export class BreedingRecordsComponent implements OnInit ,AfterViewInit {
-
-    private idColumn = 'cowTag';
-
-    public dataLength: number;
+export class BreedingRecordsComponent implements OnInit  {
+  
     // Cattle/Calf records
     public dataSource = new MatTableDataSource<breeding>();
+    public breedingData : breeding[];
 
     
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    public displayedColumns = ['No','cowtag','date','dueDate','details','update','delete'  ];
 
-   
-    constructor(private breedingService: BreedingService, public dialog: MatDialog) { }
+    // Column headers
+    public displayedColumns = ['No', 'cowtag', 'date', 'dueDate', 'methodOfInsemination', 'reproductiveCondition', 
+                                'reproductiveTreatment'  ];
 
+    constructor(private breedingService: BreedingService, public dialog: MatDialog,private pdfService: PdfServiceService) { }
 
+     data: breeding[];
+    // Initialise parameters
     ngOnInit() {
-      this.getAllCattles();
-    }
-
-    ngAfterViewInit(): void {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-  }
-
+      this.getAllBreedingHistory();
+    }
 
   // Get all cattle records
-    public getAllCattles  ()  {
+    public getAllBreedingHistory  ()  {
       this.breedingService.getAllBreedingRecords()
       .subscribe(res => {
         this.dataSource.data = res as breeding[];
+        this.breedingData = this.dataSource.data;
       });
     }
 
@@ -49,30 +51,19 @@ export class BreedingRecordsComponent implements OnInit ,AfterViewInit {
     public doFilter = (value: string) => {
       this.dataSource.filter = value.trim().toLocaleLowerCase();
     }
-    
-    // // View Calf Details
-    // public redirectToCalfDetails(id: string){
-    //   this.dialog.open(this.calfDetailsComponent, {
-    //     data: {id, idColumn: this.idColumn, paginator: this.paginator, dataSource: this.cattleDateSource},
-    //     panelClass: 'full-width-dialog'
-    //   });
-      
-    // }
 
 
-    redirectToDetails(){
-      
-    }
 
+    // Report (method to be called on the UI)
 
-    // update cattle details
-    public redirectToUpdate (id: string){
-      
-    }
-
-
-    // Delete calf records
-    public redirectToDelete(id: string) {
-      
+  downloadReport() {  
+   
+    const doc = this.breedingService.pdfTheme(this.breedingData.length,this.breedingData);
+    this.pdfService.pdf('Breeding',doc);
+   
   }
-}
+    //
+
+   
+    
+  }

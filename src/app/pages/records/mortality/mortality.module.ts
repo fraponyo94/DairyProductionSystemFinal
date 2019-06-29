@@ -8,9 +8,11 @@ import { MaterialModule } from 'src/app/shared/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { MortalityHistoryComponent } from './mortality-history/mortality-history.component';
+import { MainMortalityComponent } from './main-mortality/main-mortality.component';
 
 @NgModule({
-  declarations: [MortalityComponent],
+  declarations: [MortalityComponent, MortalityHistoryComponent, MainMortalityComponent],
   imports: [
     CommonModule,
     routing,
